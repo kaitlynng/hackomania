@@ -11,6 +11,19 @@ var server = http.Server(app);
 //set io to listen to events on the HTTP server
 var io = socketIO(server);
 
+//dictionary of playerinfos sorted by playerId, will move to a database later
+var players = {};
+
+//default values for new players
+function createNewPlayer(socketId) {
+  return {
+    x: Math.floor(Math.random()*700)+50,
+    y:Math.floor(Math.random()*500)+50,
+    vx: 0.05, //velocity to achieve smooth motion of character, range 0-1
+    vy: 0.05,
+    playerId: socketId};
+};
+
 app.set("port", 8000);
 
 //set the directory where static javascript, css and asset files are stored
@@ -22,40 +35,23 @@ app.get("/", (req, res) => res.sendFile(path.join(__dirname + "/index.html")));
 //note that it is SERVER.listen and not APP.listen, as  sockets is connected to HTTP instance server
 server.listen(8000, () => console.log("App listening on port 8000"));
 
-//player creation and handling
-function createPlayerAttrb(player_id, username) {
-  var player_attrb = {
-    player_id: player_id,
-    username: username,
-    player_type: Math.round(Math.random()+1),
-    audio_files: [],
-    transcriptions: [],
-    //add more as needed
-  };
-  return player_attrb;
-};
-
-
-
-
 //sockets handlers
 io.on("connection", function (socket) { //new instance is created with each new socket connection
   console.log("User connected: " + socket.id);
-  socket.emit('newConnection', socket.id);
-
-  //Startscene sockets
-  socket.on("joinGame", (username, fn) => {
-    var player_attrb = createPlayerAttrb(socket.id, username);
-    socket.broadcast.emit("newPlayer", player_attrb);
-    fn(player_attrb);
-  });
-
-  //Waitscene sockets
-
-  //Playerscenes sockets
-
+  players[socket.id] = createNewPlayer(socket.id); //adds new player to the dictionary of players
+  socket.emit("currentPlayers", players); //emits to the new connection
+  socket.broadcast.emit("newPlayer", players[socket.id]); //emits to everyone except the new connection
 
   socket.on("disconnect", function () { //do not pass socket as parameter; it takes socket object from parent function
     console.log("User disconnected: " + socket.id);
+    delete players[socket.id];
+    io.emit("playerDisconnect", socket.id); //broadcasts everyone to delete the player as well
+  });
+
+  //called when player moves, broadcasts for other players to update position data
+  socket.on("playerMove", (moveData) => {
+    players[socket.id].x = moveData.x;
+    players[socket.id].y = moveData.y;
+    socket.broadcast.emit("otherPlayerMoved", players[socket.id]);
   });
 });

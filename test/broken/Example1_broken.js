@@ -11,13 +11,14 @@ class Example1 extends Phaser.Scene {
   }
 
   create() {
-    self.socket = io(); //establish client socket
+
     self.otherPlayers = self.add.group(); //a group is a container of game objects affected in the same way
 
     //receives socket message if it establishes a new connection
-    self.socket.on("currentPlayers", (players) => {
+    socket.on("currentPlayers", (players) => {
+      console.log("Entered current players");
       Object.keys(players).forEach( (id) => { //iterates through an array of keys in players (which is a dictionary)
-        if (players[id].playerId === self.socket.id) {
+        if (players[id].playerId === socket.id) {
           self.addPlayer(players[id]); //addPlayer adds the own character
         } else {
           self.addOtherPlayers(players[id]); //adds other players' characters
@@ -26,12 +27,12 @@ class Example1 extends Phaser.Scene {
     });
 
     //receives socket message if new player joins the game
-    self.socket.on("newPlayer", (playerInfo) => {
+    socket.on("newPlayer", (playerInfo) => {
       self.addOtherPlayers(playerInfo);
     });
 
     //receives socket message if a player disconnects from the game
-    self.socket.on("playerDisconnect", (playerId) => {
+    socket.on("playerDisconnect", (playerId) => {
       self.otherPlayers.getChildren().forEach((otherPlayer) => { //getChildren returns array of game objects in the group
         if (playerId === otherPlayer.playerId) {
           otherPlayer.destroy();
@@ -39,7 +40,7 @@ class Example1 extends Phaser.Scene {
       });
     });
 
-    self.socket.on("otherPlayerMoved", (playerInfo) => {
+    socket.on("otherPlayerMoved", (playerInfo) => {
       self.otherPlayers.getChildren().forEach((otherPlayer) => {
         if (playerInfo.playerId === otherPlayer.playerId) {
           otherPlayer.x = playerInfo.x;
@@ -60,7 +61,7 @@ class Example1 extends Phaser.Scene {
 
       //update position to sockets if character moved
       if (self.image.oldPosition && (self.image.x !== self.image.oldPosition.x || self.image.y !== self.image.oldPosition.y)) {
-        self.socket.emit('playerMove', {x: self.image.x, y: self.image.y});
+        socket.emit('playerMove', {x: self.image.x, y: self.image.y});
       }
       self.image.oldPosition = {
         x: self.image.x,
