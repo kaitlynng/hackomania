@@ -37,9 +37,7 @@ class Player1S2Class extends Phaser.Scene {
       score += 10;
       scoreText.setText('Score: ' + score);
     });
-    audioBlobP2 = new Blob([new Uint8Array(audio_received[1])]); //may not work??
-    audioUrl = URL.createObjectURL(audioBlobP2);
-    this.music = new Audio(audioUrl);
+    this.music = getAudio();
     this.image = this.add.sprite(400,525,'testImage').setInteractive();
     this.input.setDraggable(this.image);
     this.input.on('drag',(pointer,gameObject,dragX)=>{

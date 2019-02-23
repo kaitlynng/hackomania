@@ -89,6 +89,12 @@ function sendAudio() {
   sendAudioReader.readAsArrayBuffer(audioBlob);
 }
 
+function getAudio(){
+  audioBlobP2 = new Blob([new Uint8Array(audio_received[1])]); //may not work??
+  audioUrl = URL.createObjectURL(audioBlobP2);
+  return new Audio(audioUrl);
+}
+
 //-------------------------------------sockets---------------------------------------------------------------
 var socket = io.connect();
 
