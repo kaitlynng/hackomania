@@ -1,6 +1,6 @@
 class Player1S2Class extends Phaser.Scene {
   constructor() {
-    super({key:"Player1S2", active: true});
+    super({key:"Player1S2"});
   }
 
 
@@ -13,7 +13,8 @@ class Player1S2Class extends Phaser.Scene {
   }
 
   create() {
-    this.cameras.main.setBounds(0, 0, 800, 500);
+    console.log('lol');
+    this.cameras.main.setBounds(0, 0, window.innerWidth, window.innerHeight);
 
     var score = 0;
     var scoreText = this.add.text(50, 50, 'Score: 0', {
