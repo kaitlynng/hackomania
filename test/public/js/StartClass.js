@@ -15,7 +15,7 @@ class StartClass extends Phaser.Scene {
     this.image.setInteractive();
 
     this.cameras.main.setBounds(0, 0, width, height);
-    this.cameras.main.setSize(window.innerWidth, window.innerHeight);
+    this.cameras.main.setSize(cameraWidth, cameraHeight);
 
     //Entering game
     this.image.on('pointerdown', () => {
