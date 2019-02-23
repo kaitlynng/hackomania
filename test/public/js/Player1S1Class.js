@@ -37,7 +37,7 @@ class Player1S1Class extends Phaser.Scene {
 
     //camera can access whole world but with a restricted window size of 800 by 500
     self.cameras.main.setBounds(0, 0, width, height);
-    self.cameras.main.setSize(800, 500);
+    self.cameras.main.setSize(window.innerWidth, window.innerHeight);
     self.cameras.main.startFollow(self.player, false, 0.1, 0.1);
 
     //minicam aka world map
