@@ -14,6 +14,21 @@ var io = socketIO(server); //note: set to listen on HTTP server
 mongoose.connect('mongodb://127.0.0.1/jiazua',{useNewUrlParser: true});
 var conn = mongoose.connection;
 
+//--------------------------adding audiofiles------------------------------------------------------------
+
+var audio_ids = ["audio_1", "audio_2", "audio_3"];
+var audioFiles = [];
+
+for(i=0;i<audio_ids.length;i++) {
+  var json_path = path.join(__dirname, 'audio_files', audio_ids[i]+'.wav');
+  audio_file = fs.readFileSync(json_path);
+  audioFiles.push(audio_file);
+  //audioFiles.push(fs.readFileSync(audio_ids[i]));
+};
+console.log(audioFiles);
+
+
+
 //-----------------------------mongo database functions---------------------------------------------------
 
 /*
@@ -155,14 +170,8 @@ server.listen(8000, () => console.log("App listening on port 8000"));
 
 //--------------------------------player creation and handling------------------------------------------
 
-var audio_ids = ["audio_1", "audio_2", "audio_3"];
-var audioFiles;
-for(i=0;i<audio_ids.length;i++) {
-  audioFiles.push()
-};
-
-
 var players = {};
+var playersPos = {};
 
 var player_num = 2;
 
@@ -196,7 +205,9 @@ function startGame() {
     players[temp[1][i]].partner_id = temp[0][i];
     partners.push([temp[0][i], temp[1][i]]);
   };
+  var audio_file = audioFiles[0];
 
+  io.emit("startGame", players, playersPos, audio_file);
 };
 
 //------------------------------------------sockets handlers---------------------------------------------
