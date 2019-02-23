@@ -264,7 +264,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
   });
 
   //
-  
+
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
   function testing(transcript,audioFile_id){
     postTranscript(transcript,audioFile_id);
