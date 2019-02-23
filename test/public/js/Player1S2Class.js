@@ -57,7 +57,7 @@ class Player1S2Class extends Phaser.Scene {
     this.play = 0;
     this.playButton = this.add.text(30,520,"play audio",{fill:'#006400'}).setInteractive();
     this.playButton.on('pointerdown',()=>{
-      console.log('mdasjaskd')
+      console.log('mdasjaskd');
       if(this.music.seek == 0){
         this.music.play();
         this.play = 1;

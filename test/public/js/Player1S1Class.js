@@ -18,11 +18,10 @@ class Player1S1Class extends Phaser.Scene {
 
     //keyboard arrow keys
     self.cursors = self.input.keyboard.createCursorKeys();
-
-    self.otherPlayers = self.physics.add.group(); 
+    self.otherPlayers = self.physics.add.group();
 
     Object.keys(playersPos).forEach((id) => {
-      self.addPlayer(self, id);
+      addPlayer(self, id);
     });
 
 //-----!!!KAITLYN LOOK HERE!!!---spawning sprite at random locations on the world map------------
@@ -126,9 +125,11 @@ class Player1S1Class extends Phaser.Scene {
     }
     else {
       var otherPlayer = self.add.sprite(playerX, playerY, 'sprite');
+      otherPlayer.scaleX = 0.5;
+      otherPlayer.scaleY = 0.5;
       otherPlayer.setTint(0x0000ff);
       self.otherPlayers.add(otherPlayer);
     }
-  }
+  };
 
 };
