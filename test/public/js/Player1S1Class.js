@@ -134,7 +134,7 @@ class Player1S1Class extends Phaser.Scene {
       // var gameObjects = this.containers.getChildren();
       // console.log(gameObjects);
 
-      io.socket.on('WordsForMe', ((words, wordsPos, partner_id) => {
+      io.socket.on('WordsForMe', (words, wordsPos, partner_id) => {
         if (partner_id == players[my_player_id]['partner_id']) {
           for (var i = 0; i < words.length; i++) {
             var wordX = wordsPos[i][0];
@@ -148,12 +148,7 @@ class Player1S1Class extends Phaser.Scene {
           }
         }
 
-        else {
-          //TO THINK
-        }
-
       }
-
   }
 
   addPlayer(player_id) {
