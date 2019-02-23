@@ -93,8 +93,8 @@ var socket = io.connect();
 
 
 socket.on("newConnection", (data) => {
-  player_id = data;
-  console.log(player_id);
+  my_player_id = data;
+  console.log(my_player_id);
   addScenes();
 });
 
