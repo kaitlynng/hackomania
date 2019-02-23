@@ -8,7 +8,6 @@ class Scene1 extends Phaser.Scene {
     self.load.image('tile', 'assets/tile.png');
     self.load.image('sprite', 'assets/sprite.png');
     self.load.image('star', 'assets/star.png');
-    self.load.image('textbox', 'assets/textbox.png');
   }
 
 
@@ -24,8 +23,8 @@ class Scene1 extends Phaser.Scene {
     var playerX = Phaser.Math.Between(20, width-20);
     var playerY = Phaser.Math.Between(20, height-20);
     self.player = self.physics.add.image(playerX, playerY, 'sprite');
-    self.player.scaleX = 0.1;
-    self.player.scaleY = 0.1;
+    self.player.scaleX = 0.08;
+    self.player.scaleY = 0.08;
     self.player.setCollideWorldBounds(true);
     self.player.onWorldBounds = true;
 
@@ -33,23 +32,34 @@ class Scene1 extends Phaser.Scene {
     self.cameras.main.setSize(800, 500);
     self.cameras.main.startFollow(self.player, false, 0.1, 0.1);
 
-    self.text = self.add.text(0,0,'hellotesting', {fill:'black'});
-    self.container = self.add.container(300, 300, [self.text]).setSize(50, 50);
+    var sentence = prompt("Please enter some Singlish");
+    self.words = sentence.split(" ");
+    self.containers = this.physics.add.group({
+      key: 'container'
+    });
 
-    self.physics.add.overlap(self.player, self.container, collectWord);
-    function collectWord (player, container) {
-      console.log('firing');
-      container.disableBody(true,true);
-      self.events.emit('addScore');
+    for (var i = 0; i < self.words.length; i++) {
+      var wordX = Phaser.Math.Between(50, width-50);
+      var wordY = Phaser.Math.Between(50, height-50);
+
+      var text = self.add.text(0, 0, self.words[i], {
+        font: '20px Arial',
+        fill: 'black'
+      });
+
+      var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
+      self.containers.add(yes)
     }
 
+    self.physics.world.enable(self.containers);
 
-    var text = self.add.text(0, 0, "MyText", { font: 'bold 20px Arial', fill: "black", align: 'center' });
-    // text.anchor.setTo(0.5);text.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
-    var textSprite = this.add.sprite(500, 500, null);
-    textSprite.addChild(text);
-    this.physics.enable(textSprite, Phaser.Physics.ARCADE);
-
+    self.physics.add.overlap(self.player, self.containers, collectWord, null, this);
+    function collectWord (player, container) {
+      console.log('firing');
+      self.containers.remove(container);
+      container.setVisible(false);
+      self.events.emit('addScore');
+    }
 
   };
 
@@ -68,6 +78,10 @@ class Scene1 extends Phaser.Scene {
       else if (self.cursors.down.isDown){
           self.player.setVelocityY(500);
       }
+
+      // var gameObjects = self.containers.getChildren();
+      // console.log(gameObjects);
+
   }
 
 };
