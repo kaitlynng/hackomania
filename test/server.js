@@ -26,9 +26,6 @@ for(i=0;i<audio_ids.length;i++) {
   //audioFiles.push(fs.readFileSync(audio_ids[i]));
 };
 
-
-
-
 //-----------------------------mongo database functions---------------------------------------------------
 
 /*
@@ -250,7 +247,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   socket.on("sendAudio", (data) => {
     fs.writeFile('audio_files/test.wav', Buffer.from(new Uint8Array(data)), ()=>{
-      writeAudio('test.wav');
+      //writeAudio('test.wav');
     }); //complete synchronously
   });
 
@@ -265,7 +262,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
   });
 
   //
-  
+
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
   function testing(transcript,audioFile_id){
     postTranscript(transcript,audioFile_id);
