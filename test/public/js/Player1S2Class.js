@@ -7,6 +7,10 @@ class Player1S2Class extends Phaser.Scene {
   // preload() {
   // 	this.load.html("leaderboard", "assets/leaderboard.html",50,50);
   // }
+  preload() {
+    this.load.image('testImage','assets/test4.jpg');
+    this.load.audio('testAudio1','assets/audiofiles/SampleAudio_0.4mb.mp3');
+  }
 
   create() {
     this.cameras.main.setBounds(0, 0, 800, 500);
@@ -34,9 +38,78 @@ class Player1S2Class extends Phaser.Scene {
       scoreText.setText('Score: ' + score);
     });
 
+    this.audioNumber = 1;
+    this.image = this.add.sprite(400,525,'testImage').setInteractive();
+    this.music = this.sound.add('testAudio'+ this.audioNumber);
+    this.input.setDraggable(this.image);
+    this.input.on('drag',(pointer,gameObject,dragX)=>{
+      var maxX = 600;
+      var minX = 300;
+      gameObject.x = Math.min(maxX, Math.max(minX,dragX));
+      var percentage = (gameObject.x - minX)/(maxX - minX);
+      this.music.setSeek(this.music.duration* percentage);
+    });
+
+    var playBox = this.add.graphics();
+    playBox.fillStyle(0xffffff, 0.8);
+    playBox.fillRect(300,525,300,2);
+
+    this.play = 0;
+    this.playButton = this.add.text(30,520,"play audio",{fill:'#006400'}).setInteractive();
+    this.playButton.on('pointerdown',()=>{
+      console.log('mdasjaskd')
+      if(this.music.seek == 0){
+        this.music.play();
+        this.play = 1;
+      }
+      else{
+        this.music.resume();
+        this.play = 1;
+      };
+    });
+
+
+    this.input.keyboard.on('keydown-SPACE', (event)=> {
+      if (this.play == 0) {
+        this.music.play();
+        this.play = 1; //playing
+      }
+      else if (this.play == 1){
+        this.music.pause();
+        this.play = 2; // paused
+      }
+      else if (this.play == 2){
+        this.music.resume();
+        this.play = 1;
+      }
+    });
+
+
+        this.pauseButton = this.add.text(150,520,"pause audio",{fill:'#006400'}).setInteractive();
+        this.pauseButton.on('pointerdown',()=>{
+          this.music.pause();
+          this.play = 2;
+    //			console.log(this.music.seek);
+        })
+
+
+        this.i = 0;
+
+
   }
 
   update() {
+    var playPercent = this.music.seek / this.music.duration;
+    this.image.x = 300 + 300*playPercent;
+
+    this.i += 1;
+    if(this.i == 50){
+      this.i = 0;
+    }
+
+    if (this.music.seek>this.music.duration){
+      this.music.stop();
+    };
 
   }
 
