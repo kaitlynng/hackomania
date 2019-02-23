@@ -1,9 +1,13 @@
 //configuration parameters of game
 var config = {
   type:Phaser.AUTO,
+  width: 3000,
+  height: 1500,
   parent:'phaser-game',
-  width: 2000,
-  height: 1000,
+  scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
   physics: {
     default: "arcade",
     arcade: {
@@ -12,16 +16,17 @@ var config = {
   },
 };
 
+
 var game = new Phaser.Game(config);
 
 //---------------------------------global variables-------------------------------------------------------
 //scene_keys = ["Start", "Wait", "Player1S1", "Player1S2", "Player2", "GameOver", "Leaderboard"];
 //scene_classes = [StartClass, WaitClass, Player1Class, Player2Class, GameOverClass, LeaderboardClass];
-
-var camera_width = window.innerWidth;
-var camera_height = window.innerHeight;
-
 var my_player_id;
+
+var cameraWidth = window.innerWidth;
+var cameraHeight = window.innerHeight;
+
 
 scene_keys = ["Start", "Wait", "Player1S1", "Player1S2", "Player2"];
 scene_classes = [StartClass, WaitClass, Player1S1Class, Player1S2Class, Player2Class];

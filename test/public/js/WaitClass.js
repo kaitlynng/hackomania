@@ -6,7 +6,7 @@ class WaitClass extends Phaser.Scene {
 
   //load assets
   preload() {
-    this.load.image("rainbow", "../assets/rainbow_test.png");
+    this.load.image("rainbow", "../assets/sprites.png");
   }
 
   create() {
@@ -16,7 +16,7 @@ class WaitClass extends Phaser.Scene {
     const {width, height} = this.sys.game.config;
 
     this.cameras.main.setBounds(0, 0, width, height);
-    this.cameras.main.setSize(camera_width, camera_height);
+    this.cameras.main.setSize(cameraWidth, cameraHeight);
 
     this.image.on('pointerdown', () => {
       this.startGame(players[my_player_id]["player_type"]);
@@ -42,14 +42,14 @@ class WaitClass extends Phaser.Scene {
     });
 
     socket.on("startGame", (players, playersPos, audiofile,audioID) => {
-      this.startGame(players, playersPos, audiofile,audioID);
+      this.startGame(players, playersPos, audiofile, audioID);
     });
   }
 
   update(delta) {
   }
 
-  startGame(players_get, playersPos_get, audiofile_get,auidoID_get) {
+  startGame(players_get, playersPos_get, audiofile_get,audioID_get) {
     players = players_get;
     playersPos = playersPos_get;
     audio_received.push([audiofile_get,audioID_get]);
