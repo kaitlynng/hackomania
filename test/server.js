@@ -224,7 +224,7 @@ function startGame() {
   var audio_file = audioFiles[0];
   var placeholder_id = 'placeholder_id';
 
-  io.emit("startGame", players, playersPos, audio_file,audioFile_id);
+  io.emit("startGame", players, playersPos, audio_file, audioFile_id);
 };
 
 //------------------------------------------sockets handlers---------------------------------------------
