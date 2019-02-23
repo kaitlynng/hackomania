@@ -51,6 +51,7 @@ class WaitClass extends Phaser.Scene {
     console.log("Players: ", players);
     console.log("PlayersPos: ", playersPos);
     console.log("Audiofile: ", audiofile);
+
     if(players[my_player_id]["player_type"] == 1) {
       sceneChange("Player1S1");
       this.scene.start("Player1S1");
