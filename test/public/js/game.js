@@ -29,6 +29,9 @@ var active_scene;
 
 var players = {};
 
+var playersPos = {};
+
+
 var record_event = false;
 var mediaRecorder;
 var audioChunks = [];
