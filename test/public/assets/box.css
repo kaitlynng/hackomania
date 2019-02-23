@@ -1,0 +1,42 @@
+#rectangle1{
+    width:200px;
+    height:100px;
+    background:#D0D3D4;
+    position: fixed;
+    top: 10;
+    right: 250;
+
+    border-radius: 20px;
+      border: 2px solid #979A9A;
+      padding: 20px;
+
+      opacity: 0.5;
+
+};
+/*
+#rectangle2{
+    width:200px;
+    height:30px;
+    background:#ccffff;
+    position: fixed;
+    top: 100;
+    right: 580;
+};
+
+#rectangle3{
+    width:200px;
+    height:30px;
+    background:#99ccff;
+    position: fixed;
+    top: 15;
+    right: 580;
+};
+
+#rectangle4{
+    width:200px;
+    height:30px;
+    background:#ccffff;
+    position: fixed;
+    top: 15;
+    right: 580;
+}; */

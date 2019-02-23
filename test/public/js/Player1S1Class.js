@@ -10,17 +10,37 @@ class Player1S1Class extends Phaser.Scene {
   }
 
   create() {
-    self.socket = io();
-
+    //basic config
     const {width, height} = self.sys.game.config;
     self.physics.world.setBounds(0, 0, width, height);
-
-    //setting tiled background
     const bg = self.add.tileSprite(0, 0, width, height, 'tile');
     bg.setOrigin(0,0);
 
     //keyboard arrow keys
     self.cursors = self.input.keyboard.createCursorKeys();
+
+    //sockets
+    self.socket = io();
+/* wait i think i dunnid this
+self.socket.on("startGame", (players, playersPos) => {
+
+}) */
+    spawnSprites(playersPos) {
+      Object.keys(playersPos).forEach((id) => {
+        addPlayer(self, id);
+      })
+    }
+
+    addPlayer(self, player_id) {
+      var playerX = playersPos[player_id][x];
+      var playerY = playersPos[player_id][y];
+      if player_id == my_player_id {
+        self.player = self.physics.add.image(playerX, playerY, 'sprite');
+      }
+      else {
+
+      }
+    }
 
 //-----!!!KAITLYN LOOK HERE!!!---spawning sprite at random locations on the world map------------
     var playerX = Phaser.Math.Between(20, width-20);
@@ -36,6 +56,14 @@ class Player1S1Class extends Phaser.Scene {
     self.cameras.main.setBounds(0, 0, width, height);
     self.cameras.main.setSize(800, 500);
     self.cameras.main.startFollow(self.player, false, 0.1, 0.1);
+
+    //  The miniCam is 400px wide, so can display the whole world at a zoom of 0.1
+
+    self.minimap = this.cameras.add(200, 5, 700, 300).setZoom(0.15).setName('mini');
+    // self.minimap.setBackgroundColor(0x002244);
+    self.minimap.scrollX = 2000;
+    self.minimap.scrollY = 800;
+    // opacity: 0.1;
 
 //-----!!!KAITLYN LOOK HERE!!!---splitting sentence into words and creating associated containers
     var sentence = prompt("Please enter some Singlish");

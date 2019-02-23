@@ -14,11 +14,11 @@ class WaitClass extends Phaser.Scene {
     this.image = this.add.image(game.config.width/2, game.config.height/2, "rainbow");
     this.image.setInteractive();
     this.image.on('pointerdown', () => {
-      this.startGame(players[player_id].player_type);
+      this.startGame(players[my_player_id].player_type);
     });
 
     if(debugging) {
-      console.log("My id: ", player_id);
+      console.log("My id: ", my_player_id);
       console.log("All players: ", players);
     };
 
@@ -49,15 +49,16 @@ class WaitClass extends Phaser.Scene {
     playersPos = playersPos;
     console.log(players, playersPos);
     Object.keys(players).forEach((id) => {
-      if(players[id][player.type] == 1) {
+      if(players[id][player_type] == 1) {
         sceneChange("Player1S1Class");
         this.scene.start("Player1S1Class");
         this.scene.start("Player1S2Class");
       };
-      else if(players[id][player.type] == 2) {
+      else if(players[id][player_type] == 2) {
         sceneChange("Player2Class");
         this.scene.start("Player2Class");
       };
-    })
-  }
+    });
+  };
+
 }
