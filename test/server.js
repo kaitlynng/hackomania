@@ -3,6 +3,7 @@ var express = require("express");
 var mongoose = require('mongoose');
 var http = require("http");
 var path = require("path");
+var fs = require("fs");
 var socketIO = require("socket.io");
 var app = express();
 
@@ -22,7 +23,7 @@ function getObject(collection_name,conditions,callback){
       if (callback && typeof callback === 'function') {
         callback(docs, "GOT:");
       };
-    })
+    });
 }
 //POST TRANSCRIPT OBJECT (TRANSCRIPT OBJECT IS A SIMPLE OBJECT)
 var transcriptSchema = new mongoose.Schema({audio_id:'string',transText:'string'});
@@ -61,8 +62,6 @@ conn.once('open',()=>{
   deleteObject('transcripts',{transText:'wabalubba'},callconsole);
   */
 });
-
-
 
 //-------------------------------------------------------------------------------------------------
 app.set("port", 8000);
@@ -103,6 +102,11 @@ io.on("connection", function (socket) { //new instance is created with each new 
     fn(players);
   });
 
+  socket.on("sendAudio", (data) => {
+    console.log(data);
+    fs.writeFileSync('test.wav', Buffer.from(new Uint8Array(data)));
+  });
+
   //Waitscene sockets
 
   //Playerscenes sockets
@@ -114,4 +118,3 @@ io.on("connection", function (socket) { //new instance is created with each new 
     io.emit("playerDisconnect", socket.id);
   });
 });
-

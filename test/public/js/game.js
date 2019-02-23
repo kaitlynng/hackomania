@@ -19,7 +19,7 @@ var config = {
 var game = new Phaser.Game(config);
 
 //---------------------------------global variables-------------------------------------------------------
-//scene_keys = ["Start", "Wait", "Player1", "Player2", "GameOver", "Leaderboard"];
+//scene_keys = ["Start", "Wait", "Player1S1", "Player1S2", "Player2", "GameOver", "Leaderboard"];
 //scene_classes = [StartClass, WaitClass, Player1Class, Player2Class, GameOverClass, LeaderboardClass];
 var player_id;
 
@@ -29,6 +29,19 @@ var active_scene;
 
 var players = {};
 
+var record_event = false;
+var mediaRecorder;
+var audioChunks = [];
+var audioBlob;
+var audioBuffer;
+
+var sendAudioReader = new FileReader();
+sendAudioReader.onload = (event) => {
+  console.log("Entered filereader");
+  arrayBuffer = event.target.result;
+  console.log("Array buffer: ", arrayBuffer);
+  socket.emit("sendAudio", arrayBuffer);
+};
 
 var debugging = true;
 //------------------------------------functions------------------------------------------------------------
@@ -50,6 +63,28 @@ function sceneChange(scene_key) {
   console.log("Scene change called");
   checkHTML(active_scene);
 }; //function links to jquery-methods file to control html elements
+
+//audio functions
+var handleAudioSuccess = function(stream) {
+  mediaRecorder = new MediaRecorder(stream);
+  mediaRecorder.start();
+  console.log("Media Device started");
+
+  mediaRecorder.addEventListener("dataavailable", (event) => {
+    audioChunks.push(event.data);
+  });
+
+  mediaRecorder.addEventListener("stop", () => {
+    audioBlob = new Blob(audioChunks);
+    const audioUrl = URL.createObjectURL(audioBlob);
+    reloadPlayer(audioUrl);
+    audioChunks = [];
+  });
+};
+
+function sendAudio() {
+  sendAudioReader.readAsArrayBuffer(audioBlob);
+}
 
 //-------------------------------------sockets---------------------------------------------------------------
 var socket = io.connect();
