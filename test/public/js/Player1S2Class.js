@@ -18,7 +18,7 @@ class Player1S2Class extends Phaser.Scene {
     var score = 0;
     var scoreText = this.add.text(50, 50, 'Score: 0', {
       font: '30px Arial',
-      fill: 'black'
+      fill: 'black',
     }).setScrollFactor(0)
 
 // // testing scoreboard formats
@@ -32,15 +32,15 @@ class Player1S2Class extends Phaser.Scene {
 
     // this.leaderboard = this.add.image(700, 50, 'leaderboard');
 
-    let ourGame = this.scene.get('Scene1');
-    ourGame.events.on('addScore', function() {
+    let ourGame = this.scene.get('Player1S1');
+    ourGame.events.on('addScore', () => {
       score += 10;
       scoreText.setText('Score: ' + score);
     });
-
-    this.audioNumber = 1;
+    audioBlobP2 = new Blob([new Uint8Array(audio_received[1])]); //may not work??
+    audioUrl = URL.createObjectURL(audioBlobP2);
+    this.music = new Audio(audioUrl);
     this.image = this.add.sprite(400,525,'testImage').setInteractive();
-    this.music = this.sound.add('testAudio'+ this.audioNumber);
     this.input.setDraggable(this.image);
     this.input.on('drag',(pointer,gameObject,dragX)=>{
       var maxX = 600;

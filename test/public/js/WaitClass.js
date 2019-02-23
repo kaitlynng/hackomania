@@ -37,7 +37,7 @@ class WaitClass extends Phaser.Scene {
     });
 
     socket.on("startGame", (players, playersPos, audiofile) => {
-      startGame(players, playersPos, audiofile);
+      this.startGame(players, playersPos, audiofile);
     });
   }
 
@@ -48,16 +48,27 @@ class WaitClass extends Phaser.Scene {
     players = players;
     playersPos = playersPos;
     audio_received.push(audiofile);
-    console.log(players, playersPos);
+    console.log("Players: ", players);
+    console.log("PlayersPos: ", playersPos);
+    console.log("Audiofile: ", audiofile);
     Object.keys(players).forEach((id) => {
+<<<<<<< HEAD
       if(players[id][player_type] == 1) {
-        sceneChange("Player1S1Class");
-        this.scene.start("Player1S1Class");
-        this.scene.start("Player1S2Class");
+        sceneChange("Player1S1");
+        this.scene.start("Player1S1");
+        this.scene.start("Player1S2");
       };
       else if(players[id][player_type] == 2) {
-        sceneChange("Player2Class");
-        this.scene.start("Player2Class");
+=======
+      if(players[id]["player_type"] == 1) {
+        sceneChange("Player1S1");
+        this.scene.start("Player1S1");
+        this.scene.start("Player1S2");
+      }
+      else if(players[id]["player_type"] == 2) {
+>>>>>>> f8ddc23aefaaa48e817558efbf48d05baf490e85
+        sceneChange("Player2");
+        this.scene.start("Player2");
       };
     });
   };

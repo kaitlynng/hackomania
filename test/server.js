@@ -11,7 +11,7 @@ var app = express();
 var server = http.Server(app);
 var io = socketIO(server); //note: set to listen on HTTP server
 //STUFF FOR MONGO
-mongoose.connect('mongodb://127.0.0.1/jiazua',{useNewUrlParser: true});
+mongoose.connect('mongodb://94.237.73.149:27017/jiazua',{useNewUrlParser: true});
 var conn = mongoose.connection;
 
 //--------------------------adding audiofiles------------------------------------------------------------
@@ -191,6 +191,7 @@ function createPlayerAttrb(player_id, username) {
 };
 
 function startGame() {
+  console.log("In startgame");
   var temp = [[], []];
   playertype_tog = 0;
   //assign playertype
