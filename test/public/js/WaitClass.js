@@ -44,13 +44,13 @@ class WaitClass extends Phaser.Scene {
   update(delta) {
   }
 
-  startGame(players, playersPos, audiofile) {
-    players = players;
-    playersPos = playersPos;
-    audio_received.push(audiofile);
+  startGame(players_get, playersPos_get, audiofile_get) {
+    players = players_get;
+    playersPos = playersPos_get;
+    audio_received.push(audiofile_get);
     console.log("Players: ", players);
     console.log("PlayersPos: ", playersPos);
-    console.log("Audiofile: ", audiofile);
+    console.log("Audiofile: ", audiofile_get);
 
     if(players[my_player_id]["player_type"] == 1) {
       sceneChange("Player1S1");
