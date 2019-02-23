@@ -11,6 +11,10 @@ class Player2Class extends Phaser.Scene {
 	}
 
 	create(){
+		const {width, height} = this.sys.game.config;
+		this.cameras.main.setBounds(0, 0, width, height);
+		this.cameras.main.setSize(camera_width, camera_height);
+		
 		this.audioNumber = 1;
 		this.image = this.add.sprite(400,100,'testImage').setInteractive();
 		this.music = getAudio()[0];

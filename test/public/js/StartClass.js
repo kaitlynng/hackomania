@@ -10,8 +10,12 @@ class StartClass extends Phaser.Scene {
   }
 
   create() {
-    this.image = this.add.image(game.config.width/2, game.config.height/2, "welcome");
+    const {width, height} = this.sys.game.config;
+    this.image = this.add.image(500, 500, "welcome");
     this.image.setInteractive();
+
+    this.cameras.main.setBounds(0, 0, width, height);
+    this.cameras.main.setSize(camera_width, camera_height);
 
     //Entering game
     this.image.on('pointerdown', () => {
@@ -32,7 +36,7 @@ class StartClass extends Phaser.Scene {
       alert("Please record some Singlish!");
     } else {
       sendAudio();
-      const {width, height} = self.sys.game.config;
+      const {width, height} = this.sys.game.config;
       socket.emit("joinGame", username, width, height, (data) => {
         players = data;
         sceneChange("Wait");
