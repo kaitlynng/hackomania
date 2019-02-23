@@ -214,8 +214,14 @@ function startGame() {
   };
 
   //init players positions
-
-
+  Object.keys(players).forEach((id) => {
+    if(players[id]["player_type"] == 1) {
+      playersPos[id] = {
+        x: Math.round(Math.random()*(game_width-40)+20),
+        y: Math.round(Math.random()*(game_height-40)+20),
+      };
+    }
+  });
   //send audiofile
   var audio_file = audioFiles[0];
 
