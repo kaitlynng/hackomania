@@ -28,9 +28,27 @@ class Player1S1Class extends Phaser.Scene {
       this.addPlayer(id);
     });
 
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.otherPlayers = this.physics.add.group();
+
+    Object.keys(playersPos).forEach((id) => {
+      this.addPlayer(id);
+    });
+
+//-----!!!KAITLYN LOOK HERE!!!---spawning sprite at random locations on the world map------------
+/*    var playerX = Phaser.Math.Between(20, width-20);
+    var playerY = Phaser.Math.Between(20, height-20);
+    self.player = self.physics.add.image(playerX, playerY, 'sprite');
+    // resizing the sprite image
+    self.player.scaleX = 0.5;
+    self.player.scaleY = 0.5;
+    self.player.setCollideWorldBounds(true);
+    self.player.onWorldBounds = true;
+*/
+
     //camera can access whole world but with a restricted window size of 800 by 500
     this.cameras.main.setBounds(0, 0, width, height);
-    this.cameras.main.setSize(800, 500);
+    this.cameras.main.setSize(camera_width, camera_height);
     this.cameras.main.startFollow(this.player, false, 0.1, 0.1);
 
     //minicam aka world map
@@ -107,7 +125,6 @@ class Player1S1Class extends Phaser.Scene {
   }
 
   addPlayer(player_id) {
-    console.log("In add player");
     var playerX = playersPos[player_id]['x'];
     var playerY = playersPos[player_id]['y'];
     if (player_id == my_player_id) {
@@ -125,5 +142,15 @@ class Player1S1Class extends Phaser.Scene {
       this.otherPlayers.add(otherPlayer);
     }
   };
+
+// receiving words that are correct and wrong
+/*
+io.socket.on('incomingwords', function() {
+  for (var i = 0; i < self.words.length; i++) {
+    var wordX = Phaser.Math.Between(50, width-50);
+    var wordY = Phaser.Math.Between(50, height-50);
+    storeCoordinate(wordX, wordY, self.coords);
+}
+*/
 
 };

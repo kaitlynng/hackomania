@@ -26,9 +26,6 @@ for(i=0;i<audio_ids.length;i++) {
   //audioFiles.push(fs.readFileSync(audio_ids[i]));
 };
 
-
-
-
 //-----------------------------mongo database functions---------------------------------------------------
 
 /*
@@ -249,7 +246,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   socket.on("sendAudio", (data) => {
     fs.writeFile('audio_files/test.wav', Buffer.from(new Uint8Array(data)), ()=>{
-      writeAudio('test.wav');
+      //writeAudio('test.wav');
     }); //complete synchronously
   });
 
@@ -264,17 +261,26 @@ io.on("connection", function (socket) { //new instance is created with each new 
   });
 
   //
-  
+
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
   function testing(transcript,audioFile_id){
-    console.log("got here")
     postTranscript(transcript,audioFile_id);
     getAudioByKeys({},function(){
       var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
       audio_file = fs.readFileSync(json_path);
       socket.emit('loadAudio',audio_file);
     })
+
+    var word_list = transcript.trim().split(/\s+/);
+    var num_coords = word_list.length();
+
+    //NEED TO IMPLEMENT RANDOM SPAWNING
+    //socket.emit(incomingwords)
   }});
+
+  socket.on('collision',(score,item)=>{
+
+  })
 
 
 
