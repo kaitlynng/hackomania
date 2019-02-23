@@ -267,14 +267,23 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
   function testing(transcript,audioFile_id){
-    console.log("got here")
     postTranscript(transcript,audioFile_id);
     getAudioByKeys({},function(){
       var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
       audio_file = fs.readFileSync(json_path);
       socket.emit('loadAudio',audio_file);
     })
+
+    var word_list = transcript.trim().split(/\s+/);
+    var num_coords = word_list.length();
+
+    //NEED TO IMPLEMENT RANDOM SPAWNING
+    //socket.emit(incomingwords)
   }});
+
+  socket.on('collision',(score,item)=>{
+
+  })
 
 
 
