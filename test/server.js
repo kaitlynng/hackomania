@@ -265,7 +265,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
     console.log('got to callback');
-    
+
     postTranscript(transcript,audioFile_id);
     getAudioByKeys({},function(){
       var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
