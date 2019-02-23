@@ -52,21 +52,12 @@ class WaitClass extends Phaser.Scene {
     console.log("PlayersPos: ", playersPos);
     console.log("Audiofile: ", audiofile);
     Object.keys(players).forEach((id) => {
-<<<<<<< HEAD
-      if(players[id][player_type] == 1) {
-        sceneChange("Player1S1");
-        this.scene.start("Player1S1");
-        this.scene.start("Player1S2");
-      };
-      else if(players[id][player_type] == 2) {
-=======
       if(players[id]["player_type"] == 1) {
         sceneChange("Player1S1");
         this.scene.start("Player1S1");
         this.scene.start("Player1S2");
       }
       else if(players[id]["player_type"] == 2) {
->>>>>>> f8ddc23aefaaa48e817558efbf48d05baf490e85
         sceneChange("Player2");
         this.scene.start("Player2");
       };

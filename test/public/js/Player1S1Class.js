@@ -19,19 +19,18 @@ class Player1S1Class extends Phaser.Scene {
     //keyboard arrow keys
     self.cursors = self.input.keyboard.createCursorKeys();
 
-<<<<<<< HEAD
     //group for other players
     self.otherPlayers = self.physics.add.group();
 
     //spawn sprites
     Object.keys(playersPos).forEach((id) => {
-      addPlayer(self, id);
+      self.addPlayer(self, id);
     });
 
     addPlayer(self, player_id) {
       var playerX = playersPos[player_id][x];
       var playerY = playersPos[player_id][y];
-      if player_id == my_player_id {
+      if (player_id == my_player_id) {
         self.player = self.physics.add.image(playerX, playerY, 'sprite');
         self.player.scaleX = 0.5;
         self.player.scaleY = 0.5;
@@ -44,13 +43,6 @@ class Player1S1Class extends Phaser.Scene {
         self.otherPlayers.add(otherPlayer);
       }
     };
-=======
-    //sockets
-
-    Object.keys(playersPos).forEach((id) => {
-      self.addPlayer(self, id);
-    });
->>>>>>> f8ddc23aefaaa48e817558efbf48d05baf490e85
 
 //-----!!!KAITLYN LOOK HERE!!!---spawning sprite at random locations on the world map------------
 /*    var playerX = Phaser.Math.Between(20, width-20);
