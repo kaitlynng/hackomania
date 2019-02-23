@@ -274,7 +274,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
     var word_list = transcript.trim().split(/\s+/);
     var num_coords = word_list.length();
-    var coords_array [];
+    var coords_array = [];
     for (var i = 0; i < num_coords; i++) {
       var x = Math.round(Math.random()*(game_width-40)+20);
       var y = Math.round(Math.random()*(game_height-40)+20);
