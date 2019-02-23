@@ -266,6 +266,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
   //
 
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
+
     postTranscript(transcript,audioFile_id);
     getAudioByKeys({},function(){
       var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
@@ -283,7 +284,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
       var y = Math.round(Math.random()*(game_height-40)+20);
       var coord = [x,y];
       coords_array.push(coord);
-    }
+    };
 
     //NEED TO IMPLEMENT RANDOM SPAWNING
     console.log(word_list,coords_array,socket.id);
@@ -293,9 +294,8 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   socket.on('collision',(score,socketid)=>{
     playersScores[socketid] = score;
-    socket.emit('otherCollision',(socketid)=>{
-    })
-  })
+    socket.emit('otherCollision',socketid);
+  });
 
 
 
