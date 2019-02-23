@@ -224,7 +224,11 @@ function startGame() {
   var audio_file = audioFiles[0];
   var placeholder_id = 'placeholder_id';
 
+<<<<<<< HEAD
+  io.emit("startGame", players, playersPos, audio_file, audioFile_id);
+=======
   io.emit("startGame", players, playersPos, audio_file,placeholder_id);
+>>>>>>> f7175abe70cd1938a73f071b10efc6dd9315ec42
 };
 
 //------------------------------------------sockets handlers---------------------------------------------
@@ -265,7 +269,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
     console.log('got to callback');
-    /*
+    
     postTranscript(transcript,audioFile_id);
     getAudioByKeys({},function(){
       var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
@@ -274,7 +278,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
     })
 
     var word_list = transcript.trim().split(/\s+/);
-    var num_coords = word_list.length();
+    var num_coords = word_list.length;
     var coords_array = [];
     for (var i = 0; i < num_coords; i++) {
       var x = Math.round(Math.random()*(game_width-40)+20);
@@ -285,7 +289,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
     //NEED TO IMPLEMENT RANDOM SPAWNING
     socket.emit('incomingwords',word_list,coords_array,socket.id)
-    */
+
   });
 
   socket.on('collision',(score,item)=>{

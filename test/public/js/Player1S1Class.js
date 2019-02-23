@@ -180,7 +180,53 @@ class Player1S1Class extends Phaser.Scene {
       else if (this.cursors.down.isDown){
           this.player.setVelocityY(500);
       }
-  }
+
+      // var gameObjects = this.containers.getChildren();
+      // console.log(gameObjects);
+
+  //     io.socket.on('WordsForMe', ((words, wordsPos, partner_id) => {
+  //       if (partner_id == players[my_player_id]['partner_id']) {
+  //         for (var i = 0; i < words.length; i++) {
+  //           var wordX = wordsPos[i][0];
+  //           var wordY = wordsPos[i][1];
+  //           var text = self.add.text(0, 0, words[i], {
+  //             font: '20px Arial',
+  //             fill: 'black'
+  //           });
+  //           var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
+  //           self.myContainers.add(yes) //this adds each new container to the myContainers group
+  //         }
+  //       }
+  //
+  //       else {
+  //         //TO THINK
+  //       }
+  //
+  //     }
+  //
+  // }
+  //
+  // addPlayer(player_id) {
+  //   var playerX = playersPos[player_id]['x'];
+  //   var playerY = playersPos[player_id]['y'];
+  //   if (player_id == my_player_id) {
+  //     this.player = this.physics.add.image(playerX, playerY, 'sprite');
+  //     this.player.scaleX = 0.5;
+  //     this.player.scaleY = 0.5;
+  //     this.player.setCollideWorldBounds(true);
+  //     this.player.onWorldBounds = true;
+  //   }
+  //   else {
+  //     var otherPlayer = this.add.sprite(playerX, playerY, 'sprite');
+  //     otherPlayer.scaleX = 0.5;
+  //     otherPlayer.scaleY = 0.5;
+  //     otherPlayer.setTint(0x0000ff);
+  //     this.otherPlayers.add(otherPlayer);
+  //   }
+  };
+
+// receiving words that are correct and wrong
+
 
   addPlayer(player_id) {
     var playerX = playersPos[player_id]['x'];
@@ -200,5 +246,6 @@ class Player1S1Class extends Phaser.Scene {
       this.otherPlayers.add(otherPlayer);
     }
   };
+
 
 };
