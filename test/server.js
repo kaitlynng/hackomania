@@ -11,8 +11,23 @@ var app = express();
 var server = http.Server(app);
 var io = socketIO(server); //note: set to listen on HTTP server
 //STUFF FOR MONGO
-mongoose.connect('mongodb://127.0.0.1/jiazua',{useNewUrlParser: true});
+mongoose.connect('mongodb://94.237.73.149:27017/jiazua',{useNewUrlParser: true});
 var conn = mongoose.connection;
+
+//--------------------------adding audiofiles------------------------------------------------------------
+
+var audio_ids = ["audio_1", "audio_2", "audio_3"];
+var audioFiles = [];
+
+for(i=0;i<audio_ids.length;i++) {
+  var json_path = path.join(__dirname, 'audio_files', audio_ids[i]+'.wav');
+  audio_file = fs.readFileSync(json_path);
+  audioFiles.push(audio_file);
+  //audioFiles.push(fs.readFileSync(audio_ids[i]));
+};
+console.log(audioFiles);
+
+
 
 //-----------------------------mongo database functions---------------------------------------------------
 
@@ -33,8 +48,8 @@ function getObject(collection_name,conditions,callback){
 var transcriptSchema = new mongoose.Schema({audio_id:'string',transText:'string'});
 var transcriptModel = mongoose.model('transcript',transcriptSchema,'transcripts');
 
-function postTranscript(new_text,callback){
-  var transcriptText = new transcriptModel({audio_id:'id_placeholder',transText:new_text});
+function postTranscript(new_text, audioFile_id,callback){
+  var transcriptText = new transcriptModel({audio_id:audioFile_id,transText:new_text});
   transcriptText.save(function(err){
     if (err) return handleError(err);
     transcriptModel.findOne({transText:new_text}).exec(function(err,trans){
@@ -63,8 +78,8 @@ function gfsFileName(file) {
 }
 
 //GET AUDIOFILE BY NAME
-function getAudioByName(file_name){
-  var outputPath = path.join(audioFolderPath,file_name);
+function getAudioByName(file_name,callback){
+  var outputPath = path.join(audioFolderPath,'placeholder.wav');
 
   var gfsBucket = new mongoose.mongo.GridFSBucket(conn.db,{bucketName:'audiofiles'});
   var downloadStream = gfsBucket.openDownloadStreamByName(file_name);
@@ -73,11 +88,14 @@ function getAudioByName(file_name){
   downloadStream.pipe(outputStream)
   .on('finish',function(){
     console.log(outputPath + " successfully written")
+    if (callback && typeof callback === 'function') {
+        callback();
+      };
   });
 }
 
 //GET AUDIOFILE BY OTHER MEANS
-function getAudioByKeys(filter){
+function getAudioByKeys(filter,callback){
   var gfsBucket = new mongoose.mongo.GridFSBucket(conn.db,{bucketName:'audiofiles'});
 
   var options = {limit:1}
@@ -86,7 +104,7 @@ function getAudioByKeys(filter){
   let retrieved_filename;
   downloadStream.toArray(function(err,files){
       retrieved_filename = files[0].filename;
-      getAudioByName(retrieved_filename);
+      getAudioByName(retrieved_filename,callback);
   });
 };
 
@@ -155,14 +173,11 @@ server.listen(8000, () => console.log("App listening on port 8000"));
 
 //--------------------------------player creation and handling------------------------------------------
 
-var audio_ids = ["audio_1", "audio_2", "audio_3"];
-var audioFiles;
-for(i=0;i<audio_ids.length;i++) {
-  audioFiles.push()
-};
-
+var game_width;
+var game_height;
 
 var players = {};
+var playersPos = {};
 
 var player_num = 2;
 
@@ -182,6 +197,7 @@ function createPlayerAttrb(player_id, username) {
 };
 
 function startGame() {
+  console.log("In startgame");
   var temp = [[], []];
   playertype_tog = 0;
   //assign playertype
@@ -197,6 +213,13 @@ function startGame() {
     partners.push([temp[0][i], temp[1][i]]);
   };
 
+  //init players positions
+
+
+  //send audiofile
+  var audio_file = audioFiles[0];
+
+  io.emit("startGame", players, playersPos, audio_file);
 };
 
 //------------------------------------------sockets handlers---------------------------------------------
@@ -205,7 +228,9 @@ io.on("connection", function (socket) { //new instance is created with each new 
   socket.emit('newConnection', socket.id);
 
   //Startscene sockets
-  socket.on("joinGame", (username, fn) => {
+  socket.on("joinGame", (username, width, height, fn) => {
+    game_width = width;
+    game_height = height;
     var player_attrb = createPlayerAttrb(socket.id, username);
     players[socket.id] = player_attrb;
     socket.broadcast.emit("newPlayer", players[socket.id]);
@@ -225,6 +250,28 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   //Waitscene sockets
   socket.emit("startGame", (players, playersPos));
+
+  //Player movement socket
+  socket.on('playerMove',(new_pos)=>{
+    playersPos[socket.id] = new_pos;
+    var id = socket.id;
+    socket.broadcast.emit('otherPlayerMove',{id:new_pos});
+  });
+
+  //
+  /*
+  socket.on('finishTranscript',(transcript,audioFile_id)=>{
+    postTranscript(transcript,audioFile_id);
+    getAudioByKeys({},function(){
+      socket.emit('loadAudio',);
+      var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
+      audio_file = fs.readFileSync(json_path)
+    })
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+*/
+
+
+
 
 
   //Playerscenes sockets

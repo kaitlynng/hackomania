@@ -21,23 +21,22 @@ var game = new Phaser.Game(config);
 //---------------------------------global variables-------------------------------------------------------
 //scene_keys = ["Start", "Wait", "Player1S1", "Player1S2", "Player2", "GameOver", "Leaderboard"];
 //scene_classes = [StartClass, WaitClass, Player1Class, Player2Class, GameOverClass, LeaderboardClass];
-var player_id;
+var my_player_id;
 
-scene_keys = ["Start", "Wait", "Player1S1", "Player2"];
-scene_classes = [StartClass, WaitClass, Player1S1Class, Player2Class];
+scene_keys = ["Start", "Wait", "Player1S1", "Player1S2", "Player2"];
+scene_classes = [StartClass, WaitClass, Player1S1Class, Player1S2Class, Player2Class];
 var active_scene;
 
 var players = {};
 var playersPos = {};
-
-var playersPos = {};
-
 
 var record_event = false;
 var mediaRecorder;
 var audioChunks = [];
 var audioBlob;
 var audioBuffer;
+
+var audio_received = [];
 
 var sendAudioReader = new FileReader();
 sendAudioReader.onload = (event) => {
@@ -90,13 +89,19 @@ function sendAudio() {
   sendAudioReader.readAsArrayBuffer(audioBlob);
 }
 
+function getAudio(){
+  audioBlobP2 = new Blob([new Uint8Array(audio_received[1])]); //may not work??
+  audioUrl = URL.createObjectURL(audioBlobP2);
+  return new Audio(audioUrl);
+}
+
 //-------------------------------------sockets---------------------------------------------------------------
 var socket = io.connect();
 
 
 socket.on("newConnection", (data) => {
-  player_id = data;
-  console.log(player_id);
+  my_player_id = data;
+  console.log(my_player_id);
   addScenes();
 });
 
