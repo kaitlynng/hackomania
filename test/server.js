@@ -102,7 +102,7 @@ function writeAudio(file_name){
     }
   });
   fs.createReadStream(audioFilePath).pipe(writeStream);
-  
+
   writeStream.on('finish',function(file){
     console.log( file.filename + ' Written to DB');
   });
@@ -194,7 +194,9 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   socket.on("sendAudio", (data) => {
     console.log(data);
-    fs.writeFileSync('test.wav', Buffer.from(new Uint8Array(data)));
+    fs.writeFile('test.wav', Buffer.from(new Uint8Array(data)), ()=>{
+      writeAudio('test.wav');
+    }); //complete synchronously
   });
 
   //Waitscene sockets
@@ -208,6 +210,3 @@ io.on("connection", function (socket) { //new instance is created with each new 
     io.emit("playerDisconnect", socket.id);
   });
 });
-
-
-
