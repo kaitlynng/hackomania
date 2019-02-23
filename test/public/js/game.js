@@ -1,8 +1,8 @@
 //configuration parameters of game
 var config = {
   type:Phaser.AUTO,
-  width: window.innerWidth,
-  height: window.innerHeight,
+  width: 3000,
+  height: 1500,
   parent:'phaser-game',
   scale: {
         mode: Phaser.Scale.FIT,
