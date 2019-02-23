@@ -29,15 +29,24 @@ class Scene1 extends Phaser.Scene {
     var playerY = Phaser.Math.Between(20, height-20);
     self.player = self.physics.add.image(playerX, playerY, 'sprite');
     // resizing the sprite image
-    self.player.scaleX = 0.07;
-    self.player.scaleY = 0.07;
+    self.player.scaleX = 0.5;
+    self.player.scaleY = 0.5;
     self.player.setCollideWorldBounds(true);
     self.player.onWorldBounds = true;
 
     //camera can access whole world but with a restricted window size of 800 by 500
     self.cameras.main.setBounds(0, 0, width, height);
-    self.cameras.main.setSize(800, 500);
+    self.cameras.main.setSize(1040, 650);
     self.cameras.main.startFollow(self.player, false, 0.1, 0.1);
+
+
+    //  The miniCam is 400px wide, so can display the whole world at a zoom of 0.1
+
+    self.minimap = this.cameras.add(200, 5, 700, 300).setZoom(0.15).setName('mini');
+    // self.minimap.setBackgroundColor(0x002244);
+    self.minimap.scrollX = 2000;
+    self.minimap.scrollY = 800;
+    // opacity: 0.1;
 
 //-----!!!KAITLYN LOOK HERE!!!---splitting sentence into words and creating associated containers
     var sentence = prompt("Please enter some Singlish");
