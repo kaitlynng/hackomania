@@ -61,6 +61,9 @@ class Player1S1Class extends Phaser.Scene {
 //-----!!!KAITLYN LOOK HERE!!!---splitting sentence into words and creating associated containers
     var sentence = prompt("Please enter some Singlish");
     this.words = sentence.split(" ");
+/*    var sentence = prompt("Please enter some Singlish");
+    self.words = sentence.split(" ");
+>>>>>>> 295ccb8cf57845a98e5827b004ba58c571ed2729
 
     //containers group
     this.containers = this.physics.add.group({
@@ -89,6 +92,7 @@ class Player1S1Class extends Phaser.Scene {
       var yes = this.add.container(wordX, wordY, [text]).setSize(80, 30);
       this.containers.add(yes); //this adds each new container to the container group
     }
+*/
 
     //okay this is player 1 logic dunnid put in server already
     this.physics.world.enable(this.containers);
@@ -99,7 +103,15 @@ class Player1S1Class extends Phaser.Scene {
       this.containers.remove(container);
       container.setVisible(false);
       this.events.emit('addScore');
-    }
+    };
+
+    self.myContainers = self.physics.add.group({
+      key: 'myContainer'
+    });
+
+    self.otherContainers = self.physics.add.group({
+      key: 'otherContainer'
+    });
 
   };
 
@@ -121,6 +133,26 @@ class Player1S1Class extends Phaser.Scene {
 
       // var gameObjects = this.containers.getChildren();
       // console.log(gameObjects);
+
+      io.socket.on('WordsForMe', ((words, wordsPos, partner_id) => {
+        if (partner_id == players[my_player_id]['partner_id']) {
+          for (var i = 0; i < words.length; i++) {
+            var wordX = wordsPos[i][0];
+            var wordY = wordsPos[i][1];
+            var text = self.add.text(0, 0, words[i], {
+              font: '20px Arial',
+              fill: 'black'
+            });
+            var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
+            self.myContainers.add(yes) //this adds each new container to the myContainers group
+          }
+        }
+
+        else {
+          //TO THINK
+        }
+
+      }
 
   }
 
@@ -144,6 +176,7 @@ class Player1S1Class extends Phaser.Scene {
   };
 
 // receiving words that are correct and wrong
+<<<<<<< HEAD
 /*
 io.socket.on('incomingwords', function() {
   for (var i = 0; i < self.words.length; i++) {
@@ -152,5 +185,9 @@ io.socket.on('incomingwords', function() {
     storeCoordinate(wordX, wordY, self.coords);
 }
 */
+=======
+
+
+>>>>>>> 295ccb8cf57845a98e5827b004ba58c571ed2729
 
 };
