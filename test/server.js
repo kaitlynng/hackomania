@@ -289,7 +289,9 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
 
   //Playerscenes sockets
-
+  socket.on("debugging", (string) => {
+    socket.emit("newWords", ["haha", "hoho", "hehe"], [[12, 31], [55, 120], [405, 1102]], '12345');
+  })
 
 
   socket.on("disconnect", function () { //do not pass socket as parameter; it takes socket object from parent function

@@ -80,24 +80,63 @@ class Player1S1Class extends Phaser.Scene {
 */
 
     //okay this is player 1 logic dunnid put in server already
-    self.myContainers = self.physics.add.group({
-      key: 'myContainer'
-    });
+    self.myContainers = self.physics.add.group();
 
-    self.otherContainers = self.physics.add.group({
-      key: 'otherContainer'
-    });
+    self.other_words_dict = {};
+
+    // self.otherContainers = self.physics.add.group({
+    //   key: 'otherContainer'
+    // });
 
 
     self.physics.world.enable(self.myContainers);
 
     self.physics.add.overlap(self.player, self.myContainers, collectWord, null, this);
     function collectWord (player, myContainer) {
+      //remove first container from group in other_words_dict[my_player_id]
+      //BUT ONLY CAN COLLECT IN THE ORDER OF THE ARRAY
+      //emits event COLLISION
+      // var firstChild = self.myContainers.getFirst(true);
       console.log('firing');
       self.myContainers.remove(myContainer);
       myContainer.setVisible(false);
       self.events.emit('addScore');
+      //sockets.emit('collision', )
     }
+
+    socket.emit('debugging', "hello");
+    socket.on('newWords', (words, wordsPos, partner_id) => {
+      if (partner_id == '12345') { //players[my_player_id]['partner_id']
+        for (var i = 0; i < words.length; i++) {
+          var wordX = wordsPos[i][0];
+          var wordY = wordsPos[i][1];
+          var text = self.add.text(0, 0, words[i], {
+            font: '20px Arial',
+            fill: 'black'
+          });
+          var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
+          self.myContainers.add(yes) //this adds each new container to the myContainers group
+        }
+
+        self.arrayCon = self.myContainers.getChildren();
+        for (var j = 0; j < self.arrayCon.length; j++) {
+          var textChild = self.arrayCon[j].first;
+          console.log(textChild.text);
+        }
+        // console.log(self.myContainers.getChildren());
+      }
+      // else {
+      //   self.other_words_dict[player_id] = self.physics.add.group({
+      //     //UPDATE WITH EVENT INCOMING WORDS
+      //     //for each incoming word thing, gotta access the key:player_id then add containers in this group
+      //   })
+      // }
+
+    });
+
+
+    //EVENT DELETE WORDS: access specific group of that player by going to
+    //other_words_dict[player_id] and then delete first container in the group
 
   };
 
@@ -119,26 +158,6 @@ class Player1S1Class extends Phaser.Scene {
 
       // var gameObjects = self.containers.getChildren();
       // console.log(gameObjects);
-
-      io.socket.on('WordsForMe', ((words, wordsPos, partner_id) {
-        if (partner_id == players[my_player_id]['partner_id']) {
-          for (var i = 0; i < words.length; i++) {
-            var wordX = wordsPos[i][0];
-            var wordY = wordsPos[i][1];
-            var text = self.add.text(0, 0, words[i], {
-              font: '20px Arial',
-              fill: 'black'
-            });
-            var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
-            self.myContainers.add(yes) //this adds each new container to the myContainers group
-          }
-        }
-
-        else {
-          //TO THINK
-        }
-
-      }
 
   }
 
