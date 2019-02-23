@@ -123,8 +123,17 @@ function deleteAudioByID(file_id){
   });
 }
 //***************************************
-function deleteAudioByKeys(conditions){
+function deleteAudioByKeys(filter){
+  var gfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {bucketName:'audiofiles'});
 
+  var options = {limit:1}
+  var downloadStream = gfsBucket.find(filter,options)
+
+  let retrieved_id;
+  downloadStream.toArray(function(err,files){
+      retrieved_id = files[0]._id.toString();
+      deleteAudioByID(retrieved_id);
+});
 }
 
 
@@ -135,7 +144,8 @@ function callconsole(arg,string){
 
 
 conn.once('open',()=>{
-  deleteAudioByID("5c71157da8c2dfa20ece96ba");
+  //writeAudio('test.wav');
+  deleteAudioByKeys({length : 13501});
   /*
   postTranscript("wabalubba",callconsole);
   getObject('transcripts',{transText:"wabalubba"},callconsole);
