@@ -191,6 +191,7 @@ function createPlayerAttrb(player_id, username) {
 };
 
 function startGame() {
+  console.log("In startgame");
   var temp = [[], []];
   playertype_tog = 0;
   //assign playertype
