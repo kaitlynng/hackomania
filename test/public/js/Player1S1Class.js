@@ -21,10 +21,8 @@ class Player1S1Class extends Phaser.Scene {
 
     //sockets
     self.socket = io();
-/* wait i think i dunnid this
-self.socket.on("startGame", (players, playersPos) => {
 
-}) */
+
     spawnSprites(playersPos) {
       Object.keys(playersPos).forEach((id) => {
         addPlayer(self, id);

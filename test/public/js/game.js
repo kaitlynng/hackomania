@@ -39,6 +39,8 @@ var audioChunks = [];
 var audioBlob;
 var audioBuffer;
 
+var audio_received = [];
+
 var sendAudioReader = new FileReader();
 sendAudioReader.onload = (event) => {
   console.log("Entered filereader");
