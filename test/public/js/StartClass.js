@@ -15,11 +15,10 @@ class StartClass extends Phaser.Scene {
 
     //Entering game
     this.image.on('pointerdown', () => {
-      var username = document.getElementById("text-field").value;
+      var username = document.getElementById("username").value;
       username = ((username == null) ? "" : username);
       this.enterGame(username);
     });
-
   }
 
   update(delta) {

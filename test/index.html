@@ -9,18 +9,23 @@
 <body>
   <div id="phaser-game">
   </div>
-
-  <div id="text-form">
+  <div id="start-div">
     <form>
-      <input type='text' id="text-field">
+      <input type='text' class="text-field" id="username">
       <button type="button" id="recorder">Record</button>
       <audio id="player" controls></audio>
+    </form>
+  </div>
+  <div id="player2-div">
+    <form>
+      <input type='text' class="text-field" id="transcription">
     </form>
   </div>
 </body>
 
 <script src="js/StartClass.js"></script> <!--Note the order of the scripts -->
 <script src="js/WaitClass.js"></script>
+<script src="js/Player2Class.js"></script>
 <script src="js/game.js"></script>
 <script src="js/html_control.js"></script>
 </html>

@@ -23,8 +23,8 @@ var game = new Phaser.Game(config);
 //scene_classes = [StartClass, WaitClass, Player1Class, Player2Class, GameOverClass, LeaderboardClass];
 var player_id;
 
-scene_keys = ["Start", "Wait"];
-scene_classes = [StartClass, WaitClass];
+scene_keys = ["Start", "Wait", "Player2"];
+scene_classes = [StartClass, WaitClass, Player2Class];
 var active_scene;
 
 var players = {};
@@ -54,8 +54,8 @@ function addScenes() {
   console.log("Finished adding scenes");
 
   active_scene = scene_keys[0];
+  sceneChange(active_scene);
   game.scene.start(active_scene);
-
 }
 
 function sceneChange(scene_key) {
