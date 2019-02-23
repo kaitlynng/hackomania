@@ -48,7 +48,7 @@ class Player1S1Class extends Phaser.Scene {
     // opacity: 0.1;
 
 //-----!!!KAITLYN LOOK HERE!!!---splitting sentence into words and creating associated containers
-    var sentence = prompt("Please enter some Singlish");
+/*    var sentence = prompt("Please enter some Singlish");
     self.words = sentence.split(" ");
 
     //containers group
@@ -78,15 +78,25 @@ class Player1S1Class extends Phaser.Scene {
       var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
       self.containers.add(yes) //this adds each new container to the container group
     }
+*/
 
     //okay this is player 1 logic dunnid put in server already
-    self.physics.world.enable(self.containers);
+    self.myContainers = self.physics.add.group({
+      key: 'myContainer'
+    });
 
-    self.physics.add.overlap(self.player, self.containers, collectWord, null, this);
-    function collectWord (player, container) {
+    self.otherContainers = self.physics.add.group({
+      key: 'otherContainer'
+    });
+
+
+    self.physics.world.enable(self.myContainers);
+
+    self.physics.add.overlap(self.player, self.myContainers, collectWord, null, this);
+    function collectWord (player, myContainer) {
       console.log('firing');
-      self.containers.remove(container);
-      container.setVisible(false);
+      self.myContainers.remove(myContainer);
+      myContainer.setVisible(false);
       self.events.emit('addScore');
     }
 
@@ -111,6 +121,26 @@ class Player1S1Class extends Phaser.Scene {
       // var gameObjects = self.containers.getChildren();
       // console.log(gameObjects);
 
+      io.socket.on('WordsForMe', ((words, wordsPos, partner_id) {
+        if (partner_id == players[my_player_id]['partner_id']) {
+          for (var i = 0; i < words.length; i++) {
+            var wordX = wordsPos[i][0];
+            var wordY = wordsPos[i][1];
+            var text = self.add.text(0, 0, words[i], {
+              font: '20px Arial',
+              fill: 'black'
+            });
+            var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
+            self.myContainers.add(yes) //this adds each new container to the myContainers group
+          }
+        }
+
+        else {
+          //TO THINK
+        }
+
+      }
+
   }
 
   addPlayer(self, player_id) {
@@ -134,12 +164,6 @@ class Player1S1Class extends Phaser.Scene {
 
 // receiving words that are correct and wrong
 
-io.socket.on('incomingwords', function() {
-  for (var i = 0; i < self.words.length; i++) {
-    var wordX = Phaser.Math.Between(50, width-50);
-    var wordY = Phaser.Math.Between(50, height-50);
-    storeCoordinate(wordX, wordY, self.coords);
 
-}
 
 };
