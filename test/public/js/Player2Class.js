@@ -11,7 +11,7 @@ class Player2Class extends Phaser.Scene {
 	}
 
 	create(){
-		socket.emit('finishTranscript','firstString','secondString');
+		//socket.emit('finishTranscript','firstString','secondString');
 		this.audioNumber = 1;
 		this.image = this.add.sprite(400,100,'testImage').setInteractive();
 		this.music = getAudio()[0];
@@ -106,12 +106,3 @@ class Player2Class extends Phaser.Scene {
 		};
 	}
 };
-
-/* Things to change/add:
-- make space not pause play when in text box
-*/
-/*
-- things to do:
-- map
-- sockets
-*/

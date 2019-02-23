@@ -16,7 +16,7 @@ class WaitClass extends Phaser.Scene {
     const {width, height} = this.sys.game.config;
 
     this.cameras.main.setBounds(0, 0, width, height);
-    this.cameras.main.setSize(camera_width, camera_height);
+    this.cameras.main.setSize(cameraWidth, cameraHeight);
 
     this.image.on('pointerdown', () => {
       this.startGame(players[my_player_id]["player_type"]);
