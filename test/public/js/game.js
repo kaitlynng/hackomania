@@ -21,17 +21,13 @@ var game = new Phaser.Game(config);
 //---------------------------------global variables-------------------------------------------------------
 //scene_keys = ["Start", "Wait", "Player1S1", "Player1S2", "Player2", "GameOver", "Leaderboard"];
 //scene_classes = [StartClass, WaitClass, Player1Class, Player2Class, GameOverClass, LeaderboardClass];
-var my_player_id;
+var player_id;
 
 scene_keys = ["Start", "Wait", "Player1S1", "Player1S2", "Player2"];
 scene_classes = [StartClass, WaitClass, Player1S1Class, Player1S2Class, Player2Class];
 var active_scene;
 
 var players = {};
-var playersPos = {};
-
-var playersPos = {};
-
 
 var record_event = false;
 var mediaRecorder;
@@ -97,8 +93,8 @@ var socket = io.connect();
 
 
 socket.on("newConnection", (data) => {
-  my_player_id = data;
-  console.log(my_player_id);
+  player_id = data;
+  console.log(player_id);
   addScenes();
 });
 

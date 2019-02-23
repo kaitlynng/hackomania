@@ -19,10 +19,8 @@ class Player1S1Class extends Phaser.Scene {
     //keyboard arrow keys
     self.cursors = self.input.keyboard.createCursorKeys();
 
-    //group for other players
-    self.otherPlayers = self.physics.add.group();
+    self.otherPlayers = self.physics.add.group(); 
 
-    //spawn sprites
     Object.keys(playersPos).forEach((id) => {
       self.addPlayer(self, id);
     });
