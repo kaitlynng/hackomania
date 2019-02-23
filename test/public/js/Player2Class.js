@@ -11,10 +11,7 @@ class Player2Class extends Phaser.Scene {
 	}
 
 	create(){
-		const {width, height} = this.sys.game.config;
-		this.cameras.main.setBounds(0, 0, width, height);
-		this.cameras.main.setSize(camera_width, camera_height);
-		
+		socket.emit('finishTranscript','firstString','secondString');
 		this.audioNumber = 1;
 		this.image = this.add.sprite(400,100,'testImage').setInteractive();
 		this.music = getAudio()[0];
@@ -75,7 +72,11 @@ class Player2Class extends Phaser.Scene {
 		this.enter = this.add.text(660,340,"Enter", {fill:'#0f0'}).setInteractive();
 		this.enter.on('pointerdown', () => {
 			var transcription = document.getElementById("transcription").value;
-			console.log(transcription); // SOCKETS!! send transcription + tag for audio to server
+			socket.emit('finishTranscript',transcription, audio_received[0][1]);
+			console.log('sent transcript');
+			socket.on('loadAudio',()=>{
+				console.log('heard loadAudio');
+			})
 			this.audioNumber += 1;
 			this.music = this.sound.add('testAudio'+ this.audioNumber); //SOCKETS! send ID / thing
 			this.play = 0;

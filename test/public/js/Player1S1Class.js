@@ -131,67 +131,52 @@ class Player1S1Class extends Phaser.Scene {
           this.player.setVelocityY(500);
       }
 
-<<<<<<< HEAD
-      };
-=======
       // var gameObjects = this.containers.getChildren();
       // console.log(gameObjects);
 
-      io.socket.on('WordsForMe', ((words, wordsPos, partner_id) => {
-        if (partner_id == players[my_player_id]['partner_id']) {
-          for (var i = 0; i < words.length; i++) {
-            var wordX = wordsPos[i][0];
-            var wordY = wordsPos[i][1];
-            var text = self.add.text(0, 0, words[i], {
-              font: '20px Arial',
-              fill: 'black'
-            });
-            var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
-            self.myContainers.add(yes) //this adds each new container to the myContainers group
-          }
-        }
-
-        else {
-          //TO THINK
-        }
-
-      }
-
-  }
-
-  addPlayer(player_id) {
-    var playerX = playersPos[player_id]['x'];
-    var playerY = playersPos[player_id]['y'];
-    if (player_id == my_player_id) {
-      this.player = this.physics.add.image(playerX, playerY, 'sprite');
-      this.player.scaleX = 0.5;
-      this.player.scaleY = 0.5;
-      this.player.setCollideWorldBounds(true);
-      this.player.onWorldBounds = true;
-    }
-    else {
-      var otherPlayer = this.add.sprite(playerX, playerY, 'sprite');
-      otherPlayer.scaleX = 0.5;
-      otherPlayer.scaleY = 0.5;
-      otherPlayer.setTint(0x0000ff);
-      this.otherPlayers.add(otherPlayer);
-    }
+  //     io.socket.on('WordsForMe', ((words, wordsPos, partner_id) => {
+  //       if (partner_id == players[my_player_id]['partner_id']) {
+  //         for (var i = 0; i < words.length; i++) {
+  //           var wordX = wordsPos[i][0];
+  //           var wordY = wordsPos[i][1];
+  //           var text = self.add.text(0, 0, words[i], {
+  //             font: '20px Arial',
+  //             fill: 'black'
+  //           });
+  //           var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
+  //           self.myContainers.add(yes) //this adds each new container to the myContainers group
+  //         }
+  //       }
+  //
+  //       else {
+  //         //TO THINK
+  //       }
+  //
+  //     }
+  //
+  // }
+  //
+  // addPlayer(player_id) {
+  //   var playerX = playersPos[player_id]['x'];
+  //   var playerY = playersPos[player_id]['y'];
+  //   if (player_id == my_player_id) {
+  //     this.player = this.physics.add.image(playerX, playerY, 'sprite');
+  //     this.player.scaleX = 0.5;
+  //     this.player.scaleY = 0.5;
+  //     this.player.setCollideWorldBounds(true);
+  //     this.player.onWorldBounds = true;
+  //   }
+  //   else {
+  //     var otherPlayer = this.add.sprite(playerX, playerY, 'sprite');
+  //     otherPlayer.scaleX = 0.5;
+  //     otherPlayer.scaleY = 0.5;
+  //     otherPlayer.setTint(0x0000ff);
+  //     this.otherPlayers.add(otherPlayer);
+  //   }
   };
->>>>>>> 513208ea1ed4fd1ccf06e31751eac6d4b307c0fd
 
 // receiving words that are correct and wrong
-<<<<<<< HEAD
-/*
-io.socket.on('incomingwords', function() {
-  for (var i = 0; i < self.words.length; i++) {
-    var wordX = Phaser.Math.Between(50, width-50);
-    var wordY = Phaser.Math.Between(50, height-50);
-    storeCoordinate(wordX, wordY, self.coords);
-}
-*/
-=======
 
 
->>>>>>> 295ccb8cf57845a98e5827b004ba58c571ed2729
 
 };
