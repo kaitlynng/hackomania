@@ -27,23 +27,6 @@ class Player1S1Class extends Phaser.Scene {
       self.addPlayer(self, id);
     });
 
-    addPlayer(self, player_id) {
-      var playerX = playersPos[player_id][x];
-      var playerY = playersPos[player_id][y];
-      if (player_id == my_player_id) {
-        self.player = self.physics.add.image(playerX, playerY, 'sprite');
-        self.player.scaleX = 0.5;
-        self.player.scaleY = 0.5;
-        self.player.setCollideWorldBounds(true);
-        self.player.onWorldBounds = true;
-      }
-      else {
-        var otherPlayer = self.add.sprite(playerX, playerY, 'sprite');
-        otherPlayer.setTint(0x0000ff);
-        self.otherPlayers.add(otherPlayer);
-      }
-    };
-
 //-----!!!KAITLYN LOOK HERE!!!---spawning sprite at random locations on the world map------------
 /*    var playerX = Phaser.Math.Between(20, width-20);
     var playerY = Phaser.Math.Between(20, height-20);
@@ -138,9 +121,15 @@ class Player1S1Class extends Phaser.Scene {
     var playerY = playersPos[player_id][y];
     if (player_id == my_player_id) {
       self.player = self.physics.add.image(playerX, playerY, 'sprite');
+      self.player.scaleX = 0.5;
+      self.player.scaleY = 0.5;
+      self.player.setCollideWorldBounds(true);
+      self.player.onWorldBounds = true;
     }
     else {
-      console.log("dunno");
+      var otherPlayer = self.add.sprite(playerX, playerY, 'sprite');
+      otherPlayer.setTint(0x0000ff);
+      self.otherPlayers.add(otherPlayer);
     }
   }
 
