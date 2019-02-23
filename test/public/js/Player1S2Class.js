@@ -15,8 +15,6 @@ class Player1S2Class extends Phaser.Scene {
   create() {
     console.log('lol');
     this.cameras.main.setBounds(0, 0, window.innerWidth, window.innerHeight);
-
-    var score = 0;
     var scoreText = this.add.text(50, 50, 'Score: 0', {
       font: '30px Arial',
       fill: 'black',

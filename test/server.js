@@ -268,10 +268,10 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
     postTranscript(transcript,audioFile_id);
     getAudioByKeys({},function(){
-      var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
+      var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav');
       audio_file = fs.readFileSync(json_path);
       socket.emit('loadAudio',audio_file);
-    })
+    });
 
     var word_list = transcript.trim().split(/\s+/);
     var num_coords = word_list.length;
@@ -282,23 +282,19 @@ io.on("connection", function (socket) { //new instance is created with each new 
       var coord = [x,y];
       coords_array.push(coord);
     }
+  });
 
     //NEED TO IMPLEMENT RANDOM SPAWNING
-    socket.emit('incomingwords',word_list,coords_array,socket.id)
-
-  });
 
   socket.on('collision',(score,item)=>{
 
-  })
-
-
-
+  });
 
   //Playerscenes sockets
   socket.on("debugging", (string) => {
-    socket.emit("newWords", ["haha", "hoho", "hehe"], [[12, 31], [55, 120], [405, 1102]], '12345');
-  })
+    socket.emit("newWords", ["number1", "number2", "number3"], [[12, 31], [55, 120], [405, 1102]], '12345');
+    socket.emit("newWords", ["lala", "lolo", "lele"], [[34, 280], [11, 142], [805, 1020]], '54321');
+  });
 
 
   socket.on("disconnect", function () { //do not pass socket as parameter; it takes socket object from parent function

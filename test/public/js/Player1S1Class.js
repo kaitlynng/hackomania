@@ -48,21 +48,24 @@ class Player1S1Class extends Phaser.Scene {
 
     this.physics.world.enable(this.myContainers);
     this.physics.add.overlap(this.player, this.myContainers, collectWord, null, this);
-    function collectWord (player, myContainer) {
+    function collectWord (player, col_container) {
       //remove first container from group in other_words_dict[my_player_id]
       //BUT ONLY CAN COLLECT IN THE ORDER OF THE ARRAY
       //emits event COLLISION
       // var firstChild = this.myContainers.getFirst(true);
-      console.log('firing');
-      this.myContainers.remove(myContainer);
-      myContainer.setVisible(false);
-      this.events.emit('addScore');
+      var arrayCon = this.myContainers.getChildren();
+      if(arrayCon[0] === col_container) {
+        this.myContainers.remove(col_container);
+        col_container.setVisible(false);
+        this.events.emit('addScore');
+        socket.emit('collision', score, my_player_id);
+      };
       //socket.emit('collision', )
-    }
+    };
 
     socket.emit('debugging', "hello");
-    socket.on('newWords', (words, wordsPos, partner_id) => {
-      if (partner_id == '12345') { //players[my_player_id]['partner_id']
+    socket.on('newWords', (words, wordsPos, player_id) => {
+      if (player_id == '12345') { //players[my_player_id]['partner_id']
         for (var i = 0; i < words.length; i++) {
           var wordX = wordsPos[i][0];
           var wordY = wordsPos[i][1];
@@ -71,22 +74,34 @@ class Player1S1Class extends Phaser.Scene {
             fill: 'black'
           });
           var yes = this.add.container(wordX, wordY, [text]).setSize(80, 30);
-          this.myContainers.add(yes) //this adds each new container to the myContainers group
-        }
-
-        this.arrayCon = this.myContainers.getChildren();
-        for (var j = 0; j < this.arrayCon.length; j++) {
-          var textChild = this.arrayCon[j].first;
-          console.log(textChild.text);
+          this.myContainers.add(yes); //this adds each new container to the myContainers group
         }
         // console.log(this.myContainers.getChildren());
-      }
-      // else {
-      //   this.other_words_dict[player_id] = this.physics.add.group({
-      //     //UPDATE WITH EVENT INCOMING WORDS
-      //     //for each incoming word thing, gotta access the key:player_id then add containers in this group
-      //   })
-      // }
+      } else {
+        this.other_words_dict[player_id] = this.physics.add.group();
+        for (var i = 0; i < words.length; i++) {
+          var wordX = wordsPos[i][0];
+          var wordY = wordsPos[i][1];
+          var text = this.add.text(0, 0, words[i], {
+            font: '20px Arial',
+            fill: 'black'
+          });
+          var yes = this.add.container(wordX, wordY, [text]).setSize(80, 30);
+          this.other_words_dict[player_id].add(yes);
+        }
+      };
+      this.arrayCon = this.myContainers.getChildren();
+      for (var j = 0; j < this.arrayCon.length; j++) {
+        var textChild = this.arrayCon[j].first;
+        console.log(textChild.text);
+      };
+    });
+
+    socket.on('otherCollision', (player_id) => {
+      var other_container = this.other_words_dict[player_id];
+      rem_container = other_container.getChildren()[0];
+      other_container.remove(rem_container);
+      rem_container.setVisible(false);
     });
 
     socket.on('playerDisconnect', (player_id) => {
