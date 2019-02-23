@@ -173,6 +173,9 @@ server.listen(8000, () => console.log("App listening on port 8000"));
 
 //--------------------------------player creation and handling------------------------------------------
 
+var game_width;
+var game_height;
+
 var players = {};
 var playersPos = {};
 
@@ -194,6 +197,7 @@ function createPlayerAttrb(player_id, username) {
 };
 
 function startGame() {
+  console.log("In startgame");
   var temp = [[], []];
   playertype_tog = 0;
   //assign playertype
@@ -208,6 +212,11 @@ function startGame() {
     players[temp[1][i]].partner_id = temp[0][i];
     partners.push([temp[0][i], temp[1][i]]);
   };
+
+  //init players positions
+
+
+  //send audiofile
   var audio_file = audioFiles[0];
 
   io.emit("startGame", players, playersPos, audio_file);
@@ -219,7 +228,9 @@ io.on("connection", function (socket) { //new instance is created with each new 
   socket.emit('newConnection', socket.id);
 
   //Startscene sockets
-  socket.on("joinGame", (username, fn) => {
+  socket.on("joinGame", (username, width, height, fn) => {
+    game_width = width;
+    game_height = height;
     var player_attrb = createPlayerAttrb(socket.id, username);
     players[socket.id] = player_attrb;
     socket.broadcast.emit("newPlayer", players[socket.id]);

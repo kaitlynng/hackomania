@@ -32,7 +32,8 @@ class StartClass extends Phaser.Scene {
       alert("Please record some Singlish!");
     } else {
       sendAudio();
-      socket.emit("joinGame", username, (data) => {
+      const {width, height} = self.sys.game.config;
+      socket.emit("joinGame", username, width, height, (data) => {
         players = data;
         sceneChange("Wait");
         this.scene.start("Wait");

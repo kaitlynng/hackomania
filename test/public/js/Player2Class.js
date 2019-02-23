@@ -13,8 +13,7 @@ class Player2Class extends Phaser.Scene {
 	create(){
 		this.audioNumber = 1;
 		this.image = this.add.sprite(400,100,'testImage').setInteractive();
-
-		this.music = this.sound.add('testAudio'+ this.audioNumber);
+		this.music = getAudio();
 		this.input.setDraggable(this.image);
 		this.input.on('drag',(pointer,gameObject,dragX)=>{
 			var maxX = 600;
