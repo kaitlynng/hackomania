@@ -264,7 +264,9 @@ io.on("connection", function (socket) { //new instance is created with each new 
   //
 
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
-    
+    console.log('got to callback');
+    /*
+>>>>>>> c86129491ed10e218e4fa8ffdf1d18c68e987991
     postTranscript(transcript,audioFile_id);
     getAudioByKeys({},function(){
       var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
@@ -284,8 +286,8 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
     //NEED TO IMPLEMENT RANDOM SPAWNING
     socket.emit('incomingwords',word_list,coords_array,socket.id)
-
-  }});
+    */
+  });
 
   socket.on('collision',(score,item)=>{
 
@@ -295,7 +297,9 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
 
   //Playerscenes sockets
-
+  socket.on("debugging", (string) => {
+    socket.emit("newWords", ["haha", "hoho", "hehe"], [[12, 31], [55, 120], [405, 1102]], '12345');
+  })
 
 
   socket.on("disconnect", function () { //do not pass socket as parameter; it takes socket object from parent function
