@@ -28,7 +28,7 @@ class Player1S1Class extends Phaser.Scene {
 
     //camera can access whole world but with a restricted window size
     this.cameras.main.setBounds(0, 0, width, height);
-    this.cameras.main.setSize(camera_width, camera_height);
+    this.cameras.main.setSize(cameraWidth, cameraHeight);
     this.cameras.main.startFollow(this.player, false, 0.1, 0.1);
 
     //minicam aka world map
@@ -56,7 +56,7 @@ class Player1S1Class extends Phaser.Scene {
       this.myContainers.remove(myContainer);
       myContainer.setVisible(false);
       this.events.emit('addScore');
-      //sockets.emit('collision', )
+      //socket.emit('collision', )
     }
 
     socket.emit('debugging', "hello");
@@ -86,13 +86,13 @@ class Player1S1Class extends Phaser.Scene {
       //     //for each incoming word thing, gotta access the key:player_id then add containers in this group
       //   })
       // }
-    }
+    });
 
-    sockets.on('playerDisconnect', (player_id) => {
+    socket.on('playerDisconnect', (player_id) => {
       //eh
     });
 
-    sockets.on('otherPlayerMove', (new_pos) => {
+    socket.on('otherPlayerMove', (new_pos) => {
       var player_id = Object.keys(new_pos)[0];
       this.otherPlayers[player_id] = new_pos[player_id];
     })
@@ -125,69 +125,7 @@ class Player1S1Class extends Phaser.Scene {
       y: this.player.y
     };
 
-<<<<<<< HEAD
   }
-=======
-      if (this.cursors.left.isDown){
-          this.player.setVelocityX(-500);
-      }
-      else if (this.cursors.right.isDown){
-          this.player.setVelocityX(500);
-      }
-      if (this.cursors.up.isDown){
-          this.player.setVelocityY(-500);
-      }
-      else if (this.cursors.down.isDown){
-          this.player.setVelocityY(500);
-      }
-
-      // var gameObjects = this.containers.getChildren();
-      // console.log(gameObjects);
-
-  //     io.socket.on('WordsForMe', ((words, wordsPos, partner_id) => {
-  //       if (partner_id == players[my_player_id]['partner_id']) {
-  //         for (var i = 0; i < words.length; i++) {
-  //           var wordX = wordsPos[i][0];
-  //           var wordY = wordsPos[i][1];
-  //           var text = self.add.text(0, 0, words[i], {
-  //             font: '20px Arial',
-  //             fill: 'black'
-  //           });
-  //           var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
-  //           self.myContainers.add(yes) //this adds each new container to the myContainers group
-  //         }
-  //       }
-  //
-  //       else {
-  //         //TO THINK
-  //       }
-  //
-  //     }
-  //
-  // }
-  //
-  // addPlayer(player_id) {
-  //   var playerX = playersPos[player_id]['x'];
-  //   var playerY = playersPos[player_id]['y'];
-  //   if (player_id == my_player_id) {
-  //     this.player = this.physics.add.image(playerX, playerY, 'sprite');
-  //     this.player.scaleX = 0.5;
-  //     this.player.scaleY = 0.5;
-  //     this.player.setCollideWorldBounds(true);
-  //     this.player.onWorldBounds = true;
-  //   }
-  //   else {
-  //     var otherPlayer = this.add.sprite(playerX, playerY, 'sprite');
-  //     otherPlayer.scaleX = 0.5;
-  //     otherPlayer.scaleY = 0.5;
-  //     otherPlayer.setTint(0x0000ff);
-  //     this.otherPlayers.add(otherPlayer);
-  //   }
-  };
-
-// receiving words that are correct and wrong
-
->>>>>>> f7175abe70cd1938a73f071b10efc6dd9315ec42
 
   addPlayer(player_id) {
     var playerX = playersPos[player_id]['x'];
