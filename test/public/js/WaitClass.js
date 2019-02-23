@@ -11,7 +11,7 @@ class WaitClass extends Phaser.Scene {
 
   create() {
 
-    this.image = this.add.image(500, 500, "rainbow");
+    this.image = this.add.image(600, 350, "rainbow");
     this.image.setInteractive();
     const {width, height} = this.sys.game.config;
 
