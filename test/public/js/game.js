@@ -18,20 +18,20 @@ var config = {
 
 var game = new Phaser.Game(config);
 
-
-var active_scene = "";
-function sceneChange(scene_key) {
-  active_scene = scene_key;
-  console.log("Scene change called");
-  checkHTML(active_scene);
-};
-
-//global variables
+//---------------------------------global variables-------------------------------------------------------
 //scene_keys = ["Start", "Wait", "Player1", "Player2", "GameOver", "Leaderboard"];
 //scene_classes = [StartClass, WaitClass, Player1Class, Player2Class, GameOverClass, LeaderboardClass];
+var player_id;
+
 scene_keys = ["Start", "Wait"];
 scene_classes = [StartClass, WaitClass];
-//functions
+var active_scene;
+
+var players = {};
+
+
+var debugging = true;
+//------------------------------------functions------------------------------------------------------------
 
 function addScenes() {
   for(i=scene_keys.length-1; i>-1; i--) {
@@ -45,12 +45,15 @@ function addScenes() {
 
 }
 
+function sceneChange(scene_key) {
+  active_scene = scene_key;
+  console.log("Scene change called");
+  checkHTML(active_scene);
+}; //function links to jquery-methods file to control html elements
 
-//move all socket methods here to be shared across scenes
+//-------------------------------------sockets---------------------------------------------------------------
 var socket = io.connect();
-var player_id = '';
 
-var player_attrb;
 
 socket.on("newConnection", (data) => {
   player_id = data;

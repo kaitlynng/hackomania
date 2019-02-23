@@ -3,26 +3,24 @@ var express = require("express");
 var http = require("http");
 var path = require("path");
 var socketIO = require("socket.io");
-//soma's comment
 var app = express();
-//Express creates a HTTP server for you
-//but creating a HTTP server yourself is useful if you want to reuse to HTTP server e.g. for sockets
+
 var server = http.Server(app);
-//set io to listen to events on the HTTP server
-var io = socketIO(server);
+var io = socketIO(server); //note: set to listen on HTTP server
 
 app.set("port", 8000);
 
-//set the directory where static javascript, css and asset files are stored
 app.use(express.static(path.join(__dirname+"/public")));
 
-//Routing --> to be moved to a separate routes.js file when populated
+//----------------------------------------express routing----------------------------------------------
 app.get("/", (req, res) => res.sendFile(path.join(__dirname + "/index.html")));
 
-//note that it is SERVER.listen and not APP.listen, as  sockets is connected to HTTP instance server
 server.listen(8000, () => console.log("App listening on port 8000"));
 
-//player creation and handling
+//--------------------------------player creation and handling------------------------------------------
+
+var players = {};
+
 function createPlayerAttrb(player_id, username) {
   var player_attrb = {
     player_id: player_id,
@@ -35,10 +33,7 @@ function createPlayerAttrb(player_id, username) {
   return player_attrb;
 };
 
-
-
-
-//sockets handlers
+//------------------------------------------sockets handlers---------------------------------------------
 io.on("connection", function (socket) { //new instance is created with each new socket connection
   console.log("User connected: " + socket.id);
   socket.emit('newConnection', socket.id);
@@ -46,8 +41,9 @@ io.on("connection", function (socket) { //new instance is created with each new 
   //Startscene sockets
   socket.on("joinGame", (username, fn) => {
     var player_attrb = createPlayerAttrb(socket.id, username);
-    socket.broadcast.emit("newPlayer", player_attrb);
-    fn(player_attrb);
+    players[socket.id] = player_attrb;
+    socket.broadcast.emit("newPlayer", players[socket.id]);
+    fn(players);
   });
 
   //Waitscene sockets
@@ -57,5 +53,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   socket.on("disconnect", function () { //do not pass socket as parameter; it takes socket object from parent function
     console.log("User disconnected: " + socket.id);
+    delete players[socket.id];
+    io.emit("playerDisconnect", socket.id);
   });
 });

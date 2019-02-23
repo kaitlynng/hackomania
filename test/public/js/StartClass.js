@@ -12,7 +12,6 @@ class StartClass extends Phaser.Scene {
   create() {
     this.image = this.add.image(game.config.width/2, game.config.height/2, "welcome");
     this.image.setInteractive();
-    console.log("In Start Class");
 
     //Entering game
     this.image.on('pointerdown', () => {
@@ -29,7 +28,7 @@ class StartClass extends Phaser.Scene {
 
   enterGame(username) {
     socket.emit("joinGame", username, (data) => {
-      player_attrb = data;
+      players = data;
       sceneChange("Wait");
       this.scene.start("Wait");
     });

@@ -11,10 +11,23 @@ class WaitClass extends Phaser.Scene {
 
   create() {
     this.image = this.add.image(game.config.width/2, game.config.height/2, "rainbow");
-    console.log("In Wait Class");
-    console.log("My attributes: ", player_attrb);
+    if(debugging) {
+      console.log("My id: ", player_id);
+      console.log("All players: ", players);
+    };
+
     socket.on("newPlayer", (data) => {
-      console.log("New player: ", data);
+      players[data.player_id] = data;
+      console.log("New player: ", players[data.player_id]);
+    });
+    socket.on("playerDisconnect", (id) => {
+      Object.keys(players).forEach((player_id) => {
+        if(id === player_id) {
+          delete(players[player_id]);
+        };
+      });
+      console.log("Player ", id, " disconnected");
+      console.log("Remaining players: ", players);
     });
   }
 
