@@ -6,5 +6,9 @@ function checkHTML(active_scene) {
   if(active_scene == "Wait") {
     $("#text-form").hide();
   }
-
 }
+
+// $("#text-field").focus(function()
+// {
+//   console.log('meow');
+// })
