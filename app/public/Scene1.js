@@ -11,6 +11,9 @@ class Scene1 extends Phaser.Scene {
   }
 
   create() {
+
+
+
     self.socket = io();
 
     const {width, height} = self.sys.game.config;
@@ -43,7 +46,7 @@ class Scene1 extends Phaser.Scene {
     self.words = sentence.split(" ");
 
     //containers group
-    self.containers = this.physics.add.group({
+    self.containers = self.physics.add.group({
       key: 'container'
     });
 
@@ -67,19 +70,35 @@ class Scene1 extends Phaser.Scene {
       });
 
       var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
-      self.containers.add(yes) //this adds each new container to the container group
+      self.containers.add(yes) //self adds each new container to the container group
     }
 
-    //okay this is player 1 logic dunnid put in server already
+    //okay self is player 1 logic dunnid put in server already
     self.physics.world.enable(self.containers);
 
-    self.physics.add.overlap(self.player, self.containers, collectWord, null, this);
+    self.physics.add.overlap(self.player, self.containers, collectWord, null, self);
     function collectWord (player, container) {
       console.log('firing');
       self.containers.remove(container);
       container.setVisible(false);
       self.events.emit('addScore');
     }
+
+//----------!!!UPDATE WITH SOCKET!!!----------
+    var dictOtherPlayers = {
+      playerID: [x, y],
+      player2ID: [x2, y2],
+      player3ID: [x3, y3]
+    };
+
+    socket.on("otherPlayerMove", (player_id, x, y) => {
+      Object.keys(dictOtherPlayers).forEach((id) => {
+        if(id == player_id) {
+          dictOtherPlayers[id].x = data.x;
+          dictOtherPlayers[id].y = data.y;
+        }
+      })
+    });
 
   };
 
@@ -98,6 +117,7 @@ class Scene1 extends Phaser.Scene {
       else if (self.cursors.down.isDown){
           self.player.setVelocityY(500);
       }
+
 
       // var gameObjects = self.containers.getChildren();
       // console.log(gameObjects);

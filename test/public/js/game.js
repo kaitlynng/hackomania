@@ -28,6 +28,7 @@ scene_classes = [StartClass, WaitClass, Player1S1Class, Player2Class];
 var active_scene;
 
 var players = {};
+var playersPos = {};
 
 var playersPos = {};
 

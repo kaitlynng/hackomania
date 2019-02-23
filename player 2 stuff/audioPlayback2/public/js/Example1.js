@@ -67,6 +67,9 @@ class Example1 extends Phaser.Scene {
 			console.log('Hello from the A Key!');
 		});
 
+		$("#text-field").focus(function(){
+			console.log('text-field active');
+		})
 
 		self.enter = self.add.text(660,340,"Enter", {fill:'#0f0'}).setInteractive();
 		self.enter.on('pointerdown',function(){
@@ -105,12 +108,19 @@ class Example1 extends Phaser.Scene {
 		};
 	}
 };
-
-/* Things to change/add:
-- make space not pause play when in text box
-*/
-/*
-- things to do:
-- map
-- sockets
-*/
+//
+// var playerPosnArray = [[300,200],[345,856],[234,765]];
+// var xMax = 2000;
+// var yMax = 1000;
+// var xMap = 100;
+// var yMap = 50;
+// var mapBox = this.add.graphics();
+// mapBox.fillStyle(0xffffff, 0.8);
+// mapBox.fillRect(300,100,xMap,yMap);
+// console.log(300+playerPosnArray[0][0]*xMap/xMax);
+// for (var j =0; j<playerPosnArray.length; j++) {
+// 	var player = this.add.graphics();
+// 	player.fillStyle(0xFF0000,0.8);
+// 	player.fillCircle(300+playerPosnArray[j][0]*xMap/xMax,100+playerPosnArray[j][1]*yMap/yMax,10);
+// 	console.log()
+// }
