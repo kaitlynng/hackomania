@@ -206,6 +206,11 @@ function startGame() {
     players[temp[1][i]].partner_id = temp[0][i];
     partners.push([temp[0][i], temp[1][i]]);
   };
+
+  //init players positions
+  
+
+  //send audiofile
   var audio_file = audioFiles[0];
 
   io.emit("startGame", players, playersPos, audio_file);
