@@ -48,8 +48,8 @@ function getObject(collection_name,conditions,callback){
 var transcriptSchema = new mongoose.Schema({audio_id:'string',transText:'string'});
 var transcriptModel = mongoose.model('transcript',transcriptSchema,'transcripts');
 
-function postTranscript(new_text,callback){
-  var transcriptText = new transcriptModel({audio_id:'id_placeholder',transText:new_text});
+function postTranscript(new_text, audioFile_id,callback){
+  var transcriptText = new transcriptModel({audio_id:audioFile_id,transText:new_text});
   transcriptText.save(function(err){
     if (err) return handleError(err);
     transcriptModel.findOne({transText:new_text}).exec(function(err,trans){
@@ -78,8 +78,8 @@ function gfsFileName(file) {
 }
 
 //GET AUDIOFILE BY NAME
-function getAudioByName(file_name){
-  var outputPath = path.join(audioFolderPath,file_name);
+function getAudioByName(file_name,callback){
+  var outputPath = path.join(audioFolderPath,'placeholder.wav');
 
   var gfsBucket = new mongoose.mongo.GridFSBucket(conn.db,{bucketName:'audiofiles'});
   var downloadStream = gfsBucket.openDownloadStreamByName(file_name);
@@ -88,11 +88,14 @@ function getAudioByName(file_name){
   downloadStream.pipe(outputStream)
   .on('finish',function(){
     console.log(outputPath + " successfully written")
+    if (callback && typeof callback === 'function') {
+        callback();
+      };
   });
 }
 
 //GET AUDIOFILE BY OTHER MEANS
-function getAudioByKeys(filter){
+function getAudioByKeys(filter,callback){
   var gfsBucket = new mongoose.mongo.GridFSBucket(conn.db,{bucketName:'audiofiles'});
 
   var options = {limit:1}
@@ -101,7 +104,7 @@ function getAudioByKeys(filter){
   let retrieved_filename;
   downloadStream.toArray(function(err,files){
       retrieved_filename = files[0].filename;
-      getAudioByName(retrieved_filename);
+      getAudioByName(retrieved_filename,callback);
   });
 };
 
@@ -236,6 +239,28 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   //Waitscene sockets
   socket.emit("startGame", (players, playersPos));
+
+  //Player movement socket
+  socket.on('playerMove',(new_pos)=>{
+    playersPos[socket.id] = new_pos;
+    var id = socket.id;
+    socket.broadcast.emit('otherPlayerMove',{id:new_pos});
+  });
+
+  //
+  /*
+  socket.on('finishTranscript',(transcript,audioFile_id)=>{
+    postTranscript(transcript,audioFile_id);
+    getAudioByKeys({},function(){
+      socket.emit('loadAudio',);
+      var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
+      audio_file = fs.readFileSync(json_path)
+    })
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+*/
+
+
+
 
 
   //Playerscenes sockets
