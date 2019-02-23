@@ -38,12 +38,12 @@ class Player1S1Class extends Phaser.Scene {
 //-----!!!KAITLYN LOOK HERE!!!---spawning sprite at random locations on the world map------------
 /*    var playerX = Phaser.Math.Between(20, width-20);
     var playerY = Phaser.Math.Between(20, height-20);
-    self.player = self.physics.add.image(playerX, playerY, 'sprite');
+    this.player = this.physics.add.image(playerX, playerY, 'sprite');
     // resizing the sprite image
-    self.player.scaleX = 0.5;
-    self.player.scaleY = 0.5;
-    self.player.setCollideWorldBounds(true);
-    self.player.onWorldBounds = true;
+    this.player.scaleX = 0.5;
+    this.player.scaleY = 0.5;
+    this.player.setCollideWorldBounds(true);
+    this.player.onWorldBounds = true;
 */
 
     //camera can access whole world but with a restricted window size of 800 by 500
@@ -62,7 +62,7 @@ class Player1S1Class extends Phaser.Scene {
     var sentence = prompt("Please enter some Singlish");
     this.words = sentence.split(" ");
 /*    var sentence = prompt("Please enter some Singlish");
-    self.words = sentence.split(" ");
+    this.words = sentence.split(" ");
 >>>>>>> 295ccb8cf57845a98e5827b004ba58c571ed2729
 
     //containers group
@@ -105,13 +105,63 @@ class Player1S1Class extends Phaser.Scene {
       this.events.emit('addScore');
     };
 
-    self.myContainers = self.physics.add.group({
-      key: 'myContainer'
+    this.myContainers = this.physics.add.group();
+
+    this.other_words_dict = {};
+
+    // this.otherContainers = this.physics.add.group({
+    //   key: 'otherContainer'
+    // });
+
+
+    this.physics.world.enable(this.myContainers);
+
+    this.physics.add.overlap(this.player, this.myContainers, collectWord, null, this);
+    function collectWord (player, myContainer) {
+      //remove first container from group in other_words_dict[my_player_id]
+      //BUT ONLY CAN COLLECT IN THE ORDER OF THE ARRAY
+      //emits event COLLISION
+      // var firstChild = this.myContainers.getFirst(true);
+      console.log('firing');
+      this.myContainers.remove(myContainer);
+      myContainer.setVisible(false);
+      this.events.emit('addScore');
+      //sockets.emit('collision', )
+    }
+
+    socket.emit('debugging', "hello");
+    socket.on('newWords', (words, wordsPos, partner_id) => {
+      if (partner_id == '12345') { //players[my_player_id]['partner_id']
+        for (var i = 0; i < words.length; i++) {
+          var wordX = wordsPos[i][0];
+          var wordY = wordsPos[i][1];
+          var text = this.add.text(0, 0, words[i], {
+            font: '20px Arial',
+            fill: 'black'
+          });
+          var yes = this.add.container(wordX, wordY, [text]).setSize(80, 30);
+          this.myContainers.add(yes) //this adds each new container to the myContainers group
+        }
+
+        this.arrayCon = this.myContainers.getChildren();
+        for (var j = 0; j < this.arrayCon.length; j++) {
+          var textChild = this.arrayCon[j].first;
+          console.log(textChild.text);
+        }
+        // console.log(this.myContainers.getChildren());
+      }
+      // else {
+      //   this.other_words_dict[player_id] = this.physics.add.group({
+      //     //UPDATE WITH EVENT INCOMING WORDS
+      //     //for each incoming word thing, gotta access the key:player_id then add containers in this group
+      //   })
+      // }
+
     });
 
-    self.otherContainers = self.physics.add.group({
-      key: 'otherContainer'
-    });
+
+    //EVENT DELETE WORDS: access specific group of that player by going to
+    //other_words_dict[player_id] and then delete first container in the group
 
   };
 
@@ -130,33 +180,56 @@ class Player1S1Class extends Phaser.Scene {
       else if (this.cursors.down.isDown){
           this.player.setVelocityY(500);
       }
-
 <<<<<<< HEAD
-      };
-=======
+
       // var gameObjects = this.containers.getChildren();
       // console.log(gameObjects);
 
-      io.socket.on('WordsForMe', ((words, wordsPos, partner_id) => {
-        if (partner_id == players[my_player_id]['partner_id']) {
-          for (var i = 0; i < words.length; i++) {
-            var wordX = wordsPos[i][0];
-            var wordY = wordsPos[i][1];
-            var text = self.add.text(0, 0, words[i], {
-              font: '20px Arial',
-              fill: 'black'
-            });
-            var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
-            self.myContainers.add(yes) //this adds each new container to the myContainers group
-          }
-        }
+  //     io.socket.on('WordsForMe', ((words, wordsPos, partner_id) => {
+  //       if (partner_id == players[my_player_id]['partner_id']) {
+  //         for (var i = 0; i < words.length; i++) {
+  //           var wordX = wordsPos[i][0];
+  //           var wordY = wordsPos[i][1];
+  //           var text = self.add.text(0, 0, words[i], {
+  //             font: '20px Arial',
+  //             fill: 'black'
+  //           });
+  //           var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
+  //           self.myContainers.add(yes) //this adds each new container to the myContainers group
+  //         }
+  //       }
+  //
+  //       else {
+  //         //TO THINK
+  //       }
+  //
+  //     }
+  //
+  // }
+  //
+  // addPlayer(player_id) {
+  //   var playerX = playersPos[player_id]['x'];
+  //   var playerY = playersPos[player_id]['y'];
+  //   if (player_id == my_player_id) {
+  //     this.player = this.physics.add.image(playerX, playerY, 'sprite');
+  //     this.player.scaleX = 0.5;
+  //     this.player.scaleY = 0.5;
+  //     this.player.setCollideWorldBounds(true);
+  //     this.player.onWorldBounds = true;
+  //   }
+  //   else {
+  //     var otherPlayer = this.add.sprite(playerX, playerY, 'sprite');
+  //     otherPlayer.scaleX = 0.5;
+  //     otherPlayer.scaleY = 0.5;
+  //     otherPlayer.setTint(0x0000ff);
+  //     this.otherPlayers.add(otherPlayer);
+  //   }
+  };
 
-        else {
-          //TO THINK
-        }
+// receiving words that are correct and wrong
 
-      }
 
+=======
   }
 
   addPlayer(player_id) {
@@ -177,21 +250,6 @@ class Player1S1Class extends Phaser.Scene {
       this.otherPlayers.add(otherPlayer);
     }
   };
->>>>>>> 513208ea1ed4fd1ccf06e31751eac6d4b307c0fd
-
-// receiving words that are correct and wrong
-<<<<<<< HEAD
-/*
-io.socket.on('incomingwords', function() {
-  for (var i = 0; i < self.words.length; i++) {
-    var wordX = Phaser.Math.Between(50, width-50);
-    var wordY = Phaser.Math.Between(50, height-50);
-    storeCoordinate(wordX, wordY, self.coords);
-}
-*/
-=======
-
-
->>>>>>> 295ccb8cf57845a98e5827b004ba58c571ed2729
+>>>>>>> 943c2e21e3b2a9d202fd67438cf56d051ccd517a
 
 };

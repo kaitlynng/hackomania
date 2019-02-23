@@ -224,7 +224,7 @@ function startGame() {
   var audio_file = audioFiles[0];
   var placeholder_id = 'placeholder_id';
 
-  io.emit("startGame", players, playersPos, audio_file,audioFile_id);
+  io.emit("startGame", players, playersPos, audio_file,placeholder_id);
 };
 
 //------------------------------------------sockets handlers---------------------------------------------
@@ -264,7 +264,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
   //
 
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
-  function testing(transcript,audioFile_id){
+    
     postTranscript(transcript,audioFile_id);
     getAudioByKeys({},function(){
       var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
