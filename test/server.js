@@ -123,17 +123,8 @@ function deleteAudioByID(file_id){
   });
 }
 //***************************************
-function deleteAudioByKeys(filter){
-  var gfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {bucketName:'audiofiles'});
+function deleteAudioByKeys(conditions){
 
-  var options = {limit:1}
-  var downloadStream = gfsBucket.find(filter,options)
-
-  let retrieved_id;
-  downloadStream.toArray(function(err,files){
-      retrieved_id = files[0]._id.toString();
-      deleteAudioByID(retrieved_id);
-});
 }
 
 
@@ -144,8 +135,7 @@ function callconsole(arg,string){
 
 
 conn.once('open',()=>{
-  //writeAudio('test.wav');
-  deleteAudioByKeys({length : 13501});
+  deleteAudioByID("5c71157da8c2dfa20ece96ba");
   /*
   postTranscript("wabalubba",callconsole);
   getObject('transcripts',{transText:"wabalubba"},callconsole);
@@ -195,13 +185,16 @@ io.on("connection", function (socket) { //new instance is created with each new 
   socket.on("sendAudio", (data) => {
     console.log(data);
     fs.writeFile('test.wav', Buffer.from(new Uint8Array(data)), ()=>{
-      writeAudio('test.wav');
+      //writeAudio('test.wav');
+      console.log("need mongodb for this part");
     }); //complete synchronously
   });
 
   //Waitscene sockets
 
+
   //Playerscenes sockets
+
 
 
   socket.on("disconnect", function () { //do not pass socket as parameter; it takes socket object from parent function

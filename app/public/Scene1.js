@@ -10,7 +10,6 @@ class Scene1 extends Phaser.Scene {
     self.load.image('star', 'assets/star.png');
   }
 
-
   create() {
     self.socket = io();
 

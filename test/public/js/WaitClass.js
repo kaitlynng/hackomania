@@ -42,7 +42,8 @@ class WaitClass extends Phaser.Scene {
 
   startGame(player_type) {
     console.log(player_type);
-    sceneChange("Player2");
-    this.scene.start("Player2");
+    sceneChange("Player1S1");
+    this.scene.start("Player1S1");
+    this.scene.start("Player1S2");
   }
 }
