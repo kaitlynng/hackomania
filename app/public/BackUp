@@ -49,7 +49,7 @@ class Scene1 extends Phaser.Scene {
     //   self.events.emit('addScore');
     // }
 
-    // create a list storing the positions of all the words
+    // create an array storing the positions of all the words
     self.coords = [];
 
     // create a function for storing array in the array self.coords

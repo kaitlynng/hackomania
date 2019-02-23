@@ -12,6 +12,7 @@ class Scene1 extends Phaser.Scene {
 
 
   create() {
+    self.socket = io();
 
     const {width, height} = self.sys.game.config;
     self.physics.world.setBounds(0, 0, width, height);
@@ -38,9 +39,18 @@ class Scene1 extends Phaser.Scene {
       key: 'container'
     });
 
+    // create an array storing the positions of all the words
+    self.coords = [];
+
+    // create a function for storing array in the array self.coords
+    function storeCoordinate(xVal, yVal, array) {
+      array.push({x: xVal, y: yVal});
+    }
+
     for (var i = 0; i < self.words.length; i++) {
       var wordX = Phaser.Math.Between(50, width-50);
       var wordY = Phaser.Math.Between(50, height-50);
+      storeCoordinate(wordX, wordY, self.coords);
 
       var text = self.add.text(0, 0, self.words[i], {
         font: '20px Arial',
