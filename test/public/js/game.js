@@ -21,7 +21,7 @@ var game = new Phaser.Game(config);
 //---------------------------------global variables-------------------------------------------------------
 //scene_keys = ["Start", "Wait", "Player1S1", "Player1S2", "Player2", "GameOver", "Leaderboard"];
 //scene_classes = [StartClass, WaitClass, Player1Class, Player2Class, GameOverClass, LeaderboardClass];
-var player_id;
+var my_player_id;
 
 scene_keys = ["Start", "Wait", "Player1S1", "Player1S2", "Player2"];
 scene_classes = [StartClass, WaitClass, Player1S1Class, Player1S2Class, Player2Class];
