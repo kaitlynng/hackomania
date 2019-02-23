@@ -132,4 +132,14 @@ class Player1S1Class extends Phaser.Scene {
     }
   };
 
+// receiving words that are correct and wrong
+
+io.socket.on('incomingwords', function() {
+  for (var i = 0; i < self.words.length; i++) {
+    var wordX = Phaser.Math.Between(50, width-50);
+    var wordY = Phaser.Math.Between(50, height-50);
+    storeCoordinate(wordX, wordY, self.coords);
+
+}
+
 };
