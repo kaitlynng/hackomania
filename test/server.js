@@ -25,7 +25,7 @@ for(i=0;i<audio_ids.length;i++) {
   audioFiles.push(audio_file);
   //audioFiles.push(fs.readFileSync(audio_ids[i]));
 };
-console.log(audioFiles);
+
 
 
 
@@ -49,6 +49,7 @@ var transcriptSchema = new mongoose.Schema({audio_id:'string',transText:'string'
 var transcriptModel = mongoose.model('transcript',transcriptSchema,'transcripts');
 
 function postTranscript(new_text, audioFile_id,callback){
+  console.log(new_text);
   var transcriptText = new transcriptModel({audio_id:audioFile_id,transText:new_text});
   transcriptText.save(function(err){
     if (err) return handleError(err);
@@ -241,10 +242,8 @@ io.on("connection", function (socket) { //new instance is created with each new 
   });
 
   socket.on("sendAudio", (data) => {
-    console.log(data);
-    fs.writeFile('test.wav', Buffer.from(new Uint8Array(data)), ()=>{
-      //writeAudio('test.wav');
-      console.log("need mongodb for this part");
+    fs.writeFile('audio_files/test.wav', Buffer.from(new Uint8Array(data)), ()=>{
+      writeAudio('test.wav');
     }); //complete synchronously
   });
 
@@ -259,17 +258,17 @@ io.on("connection", function (socket) { //new instance is created with each new 
   });
 
   //
-  /*
+  
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
+  function testing(transcript,audioFile_id){
+    console.log("got here")
     postTranscript(transcript,audioFile_id);
     getAudioByKeys({},function(){
-      socket.emit('loadAudio',);
       var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
-      audio_file = fs.readFileSync(json_path)
+      audio_file = fs.readFileSync(json_path);
+      socket.emit('loadAudio',audio_file);
     })
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-*/
-
+  }});
 
 
 
