@@ -151,7 +151,7 @@ function callconsole(arg,string){
 
 
 conn.once('open',()=>{
-  deleteAudioByID("5c71157da8c2dfa20ece96ba");
+  //deleteAudioByID("5c71157da8c2dfa20ece96ba");
   /*
   postTranscript("wabalubba",callconsole);
   getObject('transcripts',{transText:"wabalubba"},callconsole);
@@ -176,6 +176,7 @@ var game_height;
 
 var players = {};
 var playersPos = {};
+var playersScores = {};
 
 var player_num = 2;
 
@@ -211,13 +212,14 @@ function startGame() {
     partners.push([temp[0][i], temp[1][i]]);
   };
 
-  //init players positions
+  //init players positions and scores
   Object.keys(players).forEach((id) => {
     if(players[id]["player_type"] == 1) {
       playersPos[id] = {
         x: Math.round(Math.random()*(game_width-40)+20),
         y: Math.round(Math.random()*(game_height-40)+20),
       };
+      playersScores[id] = 0;
     }
   });
   //send audiofile
@@ -264,8 +266,6 @@ io.on("connection", function (socket) { //new instance is created with each new 
   //
 
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
-    console.log('got to callback');
-    
     postTranscript(transcript,audioFile_id);
     getAudioByKeys({},function(){
       var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
@@ -273,8 +273,10 @@ io.on("connection", function (socket) { //new instance is created with each new 
       socket.emit('loadAudio',audio_file);
     })
 
-    var word_list = transcript.trim().split(/\s+/);
+    var word_list = transcript.trim().split(' ');
+
     var num_coords = word_list.length;
+    console.log(num_coords);
     var coords_array = [];
     for (var i = 0; i < num_coords; i++) {
       var x = Math.round(Math.random()*(game_width-40)+20);
@@ -284,21 +286,19 @@ io.on("connection", function (socket) { //new instance is created with each new 
     }
 
     //NEED TO IMPLEMENT RANDOM SPAWNING
-    socket.emit('incomingwords',word_list,coords_array,socket.id)
+    console.log(word_list,coords_array,socket.id);
+    socket.emit('newWords',word_list,coords_array,socket.id);
 
   });
 
-  socket.on('collision',(score,item)=>{
-
+  socket.on('collision',(score,socketid)=>{
+    playersScores[socketid] = score;
+    socket.emit('otherCollision',(socketid)=>{
+    })
   })
 
 
 
-
-  //Playerscenes sockets
-  socket.on("debugging", (string) => {
-    socket.emit("newWords", ["haha", "hoho", "hehe"], [[12, 31], [55, 120], [405, 1102]], '12345');
-  })
 
 
   socket.on("disconnect", function () { //do not pass socket as parameter; it takes socket object from parent function
