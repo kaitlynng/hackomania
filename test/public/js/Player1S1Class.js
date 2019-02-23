@@ -156,7 +156,6 @@ class Player1S1Class extends Phaser.Scene {
       //     //for each incoming word thing, gotta access the key:player_id then add containers in this group
       //   })
       // }
-<<<<<<< HEAD
     });
 
     socket.on('playerDisconnect', (player_id) => {
@@ -167,11 +166,6 @@ class Player1S1Class extends Phaser.Scene {
       var player_id = Object.keys(new_pos)[0];
       this.otherPlayers[player_id] = new_pos[player_id];
     })
-=======
-
-    });
-
->>>>>>> 1c3afe1b3f5996cdfa4e9013ab5c10fc0a6602f1
 
     //EVENT DELETE WORDS: access specific group of that player by going to
     //other_words_dict[player_id] and then delete first container in the group
@@ -181,9 +175,6 @@ class Player1S1Class extends Phaser.Scene {
   update(delta) {
       this.player.setVelocity(0);
 
-<<<<<<< HEAD
-  }
-=======
       if (this.cursors.left.isDown){
           this.player.setVelocityX(-500);
       }
@@ -197,53 +188,9 @@ class Player1S1Class extends Phaser.Scene {
           this.player.setVelocityY(500);
       }
 
-      // var gameObjects = this.containers.getChildren();
-      // console.log(gameObjects);
 
-  //     io.socket.on('WordsForMe', ((words, wordsPos, partner_id) => {
-  //       if (partner_id == players[my_player_id]['partner_id']) {
-  //         for (var i = 0; i < words.length; i++) {
-  //           var wordX = wordsPos[i][0];
-  //           var wordY = wordsPos[i][1];
-  //           var text = self.add.text(0, 0, words[i], {
-  //             font: '20px Arial',
-  //             fill: 'black'
-  //           });
-  //           var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
-  //           self.myContainers.add(yes) //this adds each new container to the myContainers group
-  //         }
-  //       }
-  //
-  //       else {
-  //         //TO THINK
-  //       }
-  //
-  //     }
-  //
-  // }
-  //
-  // addPlayer(player_id) {
-  //   var playerX = playersPos[player_id]['x'];
-  //   var playerY = playersPos[player_id]['y'];
-  //   if (player_id == my_player_id) {
-  //     this.player = this.physics.add.image(playerX, playerY, 'sprite');
-  //     this.player.scaleX = 0.5;
-  //     this.player.scaleY = 0.5;
-  //     this.player.setCollideWorldBounds(true);
-  //     this.player.onWorldBounds = true;
-  //   }
-  //   else {
-  //     var otherPlayer = this.add.sprite(playerX, playerY, 'sprite');
-  //     otherPlayer.scaleX = 0.5;
-  //     otherPlayer.scaleY = 0.5;
-  //     otherPlayer.setTint(0x0000ff);
-  //     this.otherPlayers.add(otherPlayer);
-  //   }
   };
 
-// receiving words that are correct and wrong
-
->>>>>>> 1c3afe1b3f5996cdfa4e9013ab5c10fc0a6602f1
 
   addPlayer(player_id) {
     var playerX = playersPos[player_id]['x'];
@@ -266,3 +213,47 @@ class Player1S1Class extends Phaser.Scene {
 
 
 };
+
+
+// var gameObjects = this.containers.getChildren();
+// console.log(gameObjects);
+
+//     io.socket.on('WordsForMe', ((words, wordsPos, partner_id) => {
+//       if (partner_id == players[my_player_id]['partner_id']) {
+//         for (var i = 0; i < words.length; i++) {
+//           var wordX = wordsPos[i][0];
+//           var wordY = wordsPos[i][1];
+//           var text = self.add.text(0, 0, words[i], {
+//             font: '20px Arial',
+//             fill: 'black'
+//           });
+//           var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
+//           self.myContainers.add(yes) //this adds each new container to the myContainers group
+//         }
+//       }
+//
+//       else {
+//         //TO THINK
+//       }
+//
+//     }
+//
+// }
+//
+// addPlayer(player_id) {
+//   var playerX = playersPos[player_id]['x'];
+//   var playerY = playersPos[player_id]['y'];
+//   if (player_id == my_player_id) {
+//     this.player = this.physics.add.image(playerX, playerY, 'sprite');
+//     this.player.scaleX = 0.5;
+//     this.player.scaleY = 0.5;
+//     this.player.setCollideWorldBounds(true);
+//     this.player.onWorldBounds = true;
+//   }
+//   else {
+//     var otherPlayer = this.add.sprite(playerX, playerY, 'sprite');
+//     otherPlayer.scaleX = 0.5;
+//     otherPlayer.scaleY = 0.5;
+//     otherPlayer.setTint(0x0000ff);
+//     this.otherPlayers.add(otherPlayer);
+//   }

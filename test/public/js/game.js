@@ -22,14 +22,9 @@ var my_player_id;
 var cameraWidth = window.innerWidth;
 var cameraHeight = window.innerHeight;
 
-<<<<<<< HEAD
 
 scene_keys = ["Start", "Wait", "Player1S2", "Player1S1", "Player2"];
 scene_classes = [StartClass, WaitClass, Player1S2Class, Player1S1Class, Player2Class];
-=======
-scene_keys = ["Start", "Wait", "Player1S1", "Player1S2", "Player2"];
-scene_classes = [StartClass, WaitClass, Player1S1Class, Player1S2Class, Player2Class];
->>>>>>> 1c3afe1b3f5996cdfa4e9013ab5c10fc0a6602f1
 var active_scene;
 
 var players = {};
