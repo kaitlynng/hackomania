@@ -82,6 +82,22 @@ class Scene1 extends Phaser.Scene {
       self.events.emit('addScore');
     }
 
+//----------!!!UPDATE WITH SOCKET!!!----------
+    var dictOtherPlayers = {
+      playerID: [x, y],
+      player2ID: [x2, y2],
+      player3ID: [x3, y3]
+    };
+
+    socket.on("otherPlayerMove", (player_id, x, y) => {
+      Object.keys(dictOtherPlayers).forEach((id) => {
+        if(id == player_id) {
+          dictOtherPlayers[id].x = data.x;
+          dictOtherPlayers[id].y = data.y;
+        }
+      })
+    });
+
   };
 
   update(delta) {
