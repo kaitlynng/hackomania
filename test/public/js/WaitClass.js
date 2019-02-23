@@ -35,14 +35,29 @@ class WaitClass extends Phaser.Scene {
       console.log("Player ", id, " disconnected");
       console.log("Remaining players: ", players);
     });
+
+    socket.on("startGame", (players, playersPos) => {
+      startGame(players, playersPos);
+    }
   }
 
   update(delta) {
   }
 
-  startGame(player_type) {
-    console.log(player_type);
-    sceneChange("Player2");
-    this.scene.start("Player2");
+  startGame(players, playersPos) {
+    players = players;
+    playersPos = playersPos;
+    console.log(players, playersPos);
+    Object.keys(players).forEach((id) => {
+      if(players[id][player.type] == 1) {
+        sceneChange("Player1S1Class");
+        this.scene.start("Player1S1Class");
+        this.scene.start("Player1S2Class");
+      };
+      else if(players[id][player.type] == 2) {
+        sceneChange("Player2Class");
+        this.scene.start("Player2Class");
+      };
+    })
   }
 }

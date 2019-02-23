@@ -57,7 +57,7 @@ function deleteObject(collection_name,conditions,callback){
 //============================ audiofile objects =========================================================
 var audioFolderPath = path.join(__dirname,'audio_files');
 function gfsFileName(file) {
-  var buf = crypto.randomBytes(16)
+  var buf = crypto.randomBytes(16);
   var fileName = buf.toString('hex') + path.extname(file);
   return fileName;
 }
@@ -123,17 +123,8 @@ function deleteAudioByID(file_id){
   });
 }
 //***************************************
-function deleteAudioByKeys(filter){
-  var gfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {bucketName:'audiofiles'});
+function deleteAudioByKeys(conditions){
 
-  var options = {limit:1}
-  var downloadStream = gfsBucket.find(filter,options)
-
-  let retrieved_id;
-  downloadStream.toArray(function(err,files){
-      retrieved_id = files[0]._id.toString();
-      deleteAudioByID(retrieved_id);
-});
 }
 
 
@@ -144,8 +135,7 @@ function callconsole(arg,string){
 
 
 conn.once('open',()=>{
-  //writeAudio('test.wav');
-  deleteAudioByKeys({length : 13501});
+  deleteAudioByID("5c71157da8c2dfa20ece96ba");
   /*
   postTranscript("wabalubba",callconsole);
   getObject('transcripts',{transText:"wabalubba"},callconsole);
@@ -165,18 +155,48 @@ server.listen(8000, () => console.log("App listening on port 8000"));
 
 //--------------------------------player creation and handling------------------------------------------
 
+var audio_ids = ["audio_1", "audio_2", "audio_3"];
+var audioFiles;
+for(i=0;i<audio_ids.length;i++) {
+  audioFiles.push()
+};
+
+
 var players = {};
+
+var player_num = 2;
+
+var partners = []; //[[partner1id, partner2id], [partner1id, partner2id], [partner1id, partner2id]]
 
 function createPlayerAttrb(player_id, username) {
   var player_attrb = {
     player_id: player_id,
     username: username,
-    player_type: Math.round(Math.random()+1),
+    player_type: 0, //1 for player1 and 2 for player2
     audio_files: [],
     transcriptions: [],
+    partner_id: "",
     //add more as needed
   };
   return player_attrb;
+};
+
+function startGame() {
+  var temp = [[], []];
+  playertype_tog = 0;
+  //assign playertype
+  Object.keys(players).forEach((id) => {
+    players[id].player_type = playertype_tog+1;
+    temp[playertype_tog].push(id);
+    playertype_tog = ((playertype_tog == 0) ? 1 : 0);
+  });
+  //match partners
+  for(i=0; i<temp[0].length; i++) {
+    players[temp[0][i]].partner_id = temp[1][i];
+    players[temp[1][i]].partner_id = temp[0][i];
+    partners.push([temp[0][i], temp[1][i]]);
+  };
+
 };
 
 //------------------------------------------sockets handlers---------------------------------------------
@@ -190,18 +210,25 @@ io.on("connection", function (socket) { //new instance is created with each new 
     players[socket.id] = player_attrb;
     socket.broadcast.emit("newPlayer", players[socket.id]);
     fn(players);
+    if(Object.keys(players).length>=player_num){
+      startGame();
+    };
   });
 
   socket.on("sendAudio", (data) => {
     console.log(data);
     fs.writeFile('test.wav', Buffer.from(new Uint8Array(data)), ()=>{
-      writeAudio('test.wav');
+      //writeAudio('test.wav');
+      console.log("need mongodb for this part");
     }); //complete synchronously
   });
 
   //Waitscene sockets
+  socket.emit("startGame", (players, playersPos));
+
 
   //Playerscenes sockets
+
 
 
   socket.on("disconnect", function () { //do not pass socket as parameter; it takes socket object from parent function
