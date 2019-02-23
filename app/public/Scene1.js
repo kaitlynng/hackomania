@@ -29,7 +29,11 @@ class Scene1 extends Phaser.Scene {
 //-----!!!KAITLYN LOOK HERE!!!---spawning sprite at random locations on the world map------------
     var playerX = Phaser.Math.Between(20, width-20);
     var playerY = Phaser.Math.Between(20, height-20);
-    self.player = self.physics.add.image(playerX, playerY, 'sprite');
+    myParent = self.physics.add.sprite(playerX, playerY, 'sprite');
+    myChild = game.add.sprite('assets/sprite.png');
+    myParent.addChild(myChild, 'myChlidName');
+    myParent.children.myChildName.alpha = 0.5; // or something else
+
     // resizing the sprite image
     self.player.scaleX = 0.5;
     self.player.scaleY = 0.5;
