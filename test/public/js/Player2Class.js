@@ -11,9 +11,13 @@ class Player2Class extends Phaser.Scene {
 	}
 
 	create(){
+		const {width, height} = this.sys.game.config;
+		this.cameras.main.setBounds(0, 0, width, height);
+		this.cameras.main.setSize(camera_width, camera_height);
+		
 		this.audioNumber = 1;
 		this.image = this.add.sprite(400,100,'testImage').setInteractive();
-		this.music = getAudio();
+		this.music = getAudio()[0];
 		this.input.setDraggable(this.image);
 		this.input.on('drag',(pointer,gameObject,dragX)=>{
 			var maxX = 600;
@@ -45,7 +49,7 @@ class Player2Class extends Phaser.Scene {
 				this.play = 1;
 			}
 			else{
-				this.music.resume();
+				this.music.play();
 				this.play = 1;
 			};
 		});
@@ -61,7 +65,7 @@ class Player2Class extends Phaser.Scene {
 				this.play = 2; // paused
 			}
 			else if (this.play == 2){
-				this.music.resume();
+				this.music.play();
 				this.play = 1;
 			}
 			console.log('Hello from the A Key!');

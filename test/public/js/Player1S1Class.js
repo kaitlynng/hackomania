@@ -1,106 +1,131 @@
 class Player1S1Class extends Phaser.Scene {
   constructor() {
     super({key:"Player1S1"});
-    self = this;
   }
 
   preload() {
-    self.load.image('tile', 'assets/tile.png');
-    self.load.image('sprite', 'assets/sprite.png');
+    this.load.image('tile', 'assets/tile.png');
+    this.load.image('sprite', 'assets/sprite.png');
   }
 
   create() {
     //basic config
-    const {width, height} = self.sys.game.config;
-    self.physics.world.setBounds(0, 0, width, height);
-    const bg = self.add.tileSprite(0, 0, width, height, 'tile');
+    console.log("in create");
+    const {width, height} = this.sys.game.config;
+    console.log("What's up");
+    this.physics.world.setBounds(0, 0, width, height);
+    const bg = this.add.tileSprite(0, 0, width, height, 'tile');
     bg.setOrigin(0,0);
 
-    self.cursors = self.input.keyboard.createCursorKeys();
-    self.otherPlayers = self.physics.add.group();
+    //keyboard arrow keys
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.otherPlayers = this.physics.add.group();
+
+    console.log("PlayersPos", playersPos);
 
     Object.keys(playersPos).forEach((id) => {
-      self.addPlayer(id);
+      console.log("loop");
+      this.addPlayer(id);
+    });
+
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.otherPlayers = this.physics.add.group();
+
+    Object.keys(playersPos).forEach((id) => {
+      this.addPlayer(id);
     });
 
 //-----!!!KAITLYN LOOK HERE!!!---spawning sprite at random locations on the world map------------
 /*    var playerX = Phaser.Math.Between(20, width-20);
     var playerY = Phaser.Math.Between(20, height-20);
-    self.player = self.physics.add.image(playerX, playerY, 'sprite');
+    this.player = this.physics.add.image(playerX, playerY, 'sprite');
     // resizing the sprite image
-    self.player.scaleX = 0.5;
-    self.player.scaleY = 0.5;
-    self.player.setCollideWorldBounds(true);
-    self.player.onWorldBounds = true;
+    this.player.scaleX = 0.5;
+    this.player.scaleY = 0.5;
+    this.player.setCollideWorldBounds(true);
+    this.player.onWorldBounds = true;
 */
 
     //camera can access whole world but with a restricted window size of 800 by 500
-    self.cameras.main.setBounds(0, 0, width, height);
-    self.cameras.main.setSize(window.innerWidth, window.innerHeight);
-    self.cameras.main.startFollow(self.player, false, 0.1, 0.1);
+    this.cameras.main.setBounds(0, 0, width, height);
+    this.cameras.main.setSize(camera_width, camera_height);
+    this.cameras.main.startFollow(this.player, false, 0.1, 0.1);
 
     //minicam aka world map
-    self.minimap = this.cameras.add(200, 5, 700, 300).setZoom(0.15).setName('mini');
-    // self.minimap.setBackgroundColor(0x002244);
-    self.minimap.scrollX = 2000;
-    self.minimap.scrollY = 800;
+    this.minimap = this.cameras.add(200, 5, 700, 300).setZoom(0.15).setName('mini');
+    // this.minimap.setBackgroundColor(0x002244);
+    this.minimap.scrollX = 2000;
+    this.minimap.scrollY = 800;
     // opacity: 0.1;
 
 //-----!!!KAITLYN LOOK HERE!!!---splitting sentence into words and creating associated containers
+    var sentence = prompt("Please enter some Singlish");
+    this.words = sentence.split(" ");
 /*    var sentence = prompt("Please enter some Singlish");
-    self.words = sentence.split(" ");
+    this.words = sentence.split(" ");
+>>>>>>> 295ccb8cf57845a98e5827b004ba58c571ed2729
 
     //containers group
-    self.containers = this.physics.add.group({
+    this.containers = this.physics.add.group({
       key: 'container'
     });
 
     //array to store the positions of all the words
-    self.coords = [];
+    this.coords = [];
 
-    //function for storing array of x&y coords in the array self.coords
+    //function for storing array of x&y coords in the array this.coords
     function storeCoordinate(xVal, yVal, array) {
       array.push({x: xVal, y: yVal});
     }
 
     //spawning all the words and associated containers at random locations
-    for (var i = 0; i < self.words.length; i++) {
+    for (var i = 0; i < this.words.length; i++) {
       var wordX = Phaser.Math.Between(50, width-50);
       var wordY = Phaser.Math.Between(50, height-50);
-      storeCoordinate(wordX, wordY, self.coords);
+      storeCoordinate(wordX, wordY, this.coords);
 
-      var text = self.add.text(0, 0, self.words[i], {
+      var text = this.add.text(0, 0, this.words[i], {
         font: '20px Arial',
         fill: 'black'
       });
 
-      var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
-      self.containers.add(yes) //this adds each new container to the container group
+      var yes = this.add.container(wordX, wordY, [text]).setSize(80, 30);
+      this.containers.add(yes); //this adds each new container to the container group
     }
 */
 
     //okay this is player 1 logic dunnid put in server already
-    self.myContainers = self.physics.add.group();
+    this.physics.world.enable(this.containers);
 
-    self.other_words_dict = {};
+    this.physics.add.overlap(this.player, this.containers, collectWord, null, this);
+    function collectWord (player, container) {
+      console.log('firing');
+      this.containers.remove(container);
+      container.setVisible(false);
+      this.events.emit('addScore');
+    };
 
-    // self.otherContainers = self.physics.add.group({
+    this.myContainers = this.physics.add.group();
+
+    this.other_words_dict = {};
+
+    // this.otherContainers = this.physics.add.group({
     //   key: 'otherContainer'
     // });
 
 
-    self.physics.world.enable(self.myContainers);
+    this.physics.world.enable(this.myContainers);
 
-    self.physics.add.overlap(self.player, self.myContainers, collectWord, null, this);
+    this.physics.add.overlap(this.player, this.myContainers, collectWord, null, this);
     function collectWord (player, myContainer) {
       //remove first container from group in other_words_dict[my_player_id]
       //BUT ONLY CAN COLLECT IN THE ORDER OF THE ARRAY
       //emits event COLLISION
-      // var firstChild = self.myContainers.getFirst(true);
+      // var firstChild = this.myContainers.getFirst(true);
       console.log('firing');
-      self.myContainers.remove(myContainer);
+      this.myContainers.remove(myContainer);
       myContainer.setVisible(false);
-      self.events.emit('addScore');
+      this.events.emit('addScore');
       //sockets.emit('collision', )
     }
 
@@ -110,23 +135,23 @@ class Player1S1Class extends Phaser.Scene {
         for (var i = 0; i < words.length; i++) {
           var wordX = wordsPos[i][0];
           var wordY = wordsPos[i][1];
-          var text = self.add.text(0, 0, words[i], {
+          var text = this.add.text(0, 0, words[i], {
             font: '20px Arial',
             fill: 'black'
           });
-          var yes = self.add.container(wordX, wordY, [text]).setSize(80, 30);
-          self.myContainers.add(yes) //this adds each new container to the myContainers group
+          var yes = this.add.container(wordX, wordY, [text]).setSize(80, 30);
+          this.myContainers.add(yes) //this adds each new container to the myContainers group
         }
 
-        self.arrayCon = self.myContainers.getChildren();
-        for (var j = 0; j < self.arrayCon.length; j++) {
-          var textChild = self.arrayCon[j].first;
+        this.arrayCon = this.myContainers.getChildren();
+        for (var j = 0; j < this.arrayCon.length; j++) {
+          var textChild = this.arrayCon[j].first;
           console.log(textChild.text);
         }
-        // console.log(self.myContainers.getChildren());
+        // console.log(this.myContainers.getChildren());
       }
       // else {
-      //   self.other_words_dict[player_id] = self.physics.add.group({
+      //   this.other_words_dict[player_id] = this.physics.add.group({
       //     //UPDATE WITH EVENT INCOMING WORDS
       //     //for each incoming word thing, gotta access the key:player_id then add containers in this group
       //   })
@@ -141,48 +166,39 @@ class Player1S1Class extends Phaser.Scene {
   };
 
   update(delta) {
-      self.player.setVelocity(0);
+      this.player.setVelocity(0);
 
-      if (self.cursors.left.isDown){
-          self.player.setVelocityX(-500);
+      if (this.cursors.left.isDown){
+          this.player.setVelocityX(-500);
       }
-      else if (self.cursors.right.isDown){
-          self.player.setVelocityX(500);
+      else if (this.cursors.right.isDown){
+          this.player.setVelocityX(500);
       }
-      if (self.cursors.up.isDown){
-          self.player.setVelocityY(-500);
+      if (this.cursors.up.isDown){
+          this.player.setVelocityY(-500);
       }
-      else if (self.cursors.down.isDown){
-          self.player.setVelocityY(500);
+      else if (this.cursors.down.isDown){
+          this.player.setVelocityY(500);
       }
-
-      // var gameObjects = self.containers.getChildren();
-      // console.log(gameObjects);
-
   }
 
   addPlayer(player_id) {
-    console.log('addPlayer');
     var playerX = playersPos[player_id]['x'];
     var playerY = playersPos[player_id]['y'];
     if (player_id == my_player_id) {
-      self.player = self.physics.add.image(playerX, playerY, 'sprite');
-      self.player.scaleX = 0.5;
-      self.player.scaleY = 0.5;
-      self.player.setCollideWorldBounds(true);
-      self.player.onWorldBounds = true;
+      this.player = this.physics.add.image(playerX, playerY, 'sprite');
+      this.player.scaleX = 0.5;
+      this.player.scaleY = 0.5;
+      this.player.setCollideWorldBounds(true);
+      this.player.onWorldBounds = true;
     }
     else {
-      var otherPlayer = self.add.sprite(playerX, playerY, 'sprite');
+      var otherPlayer = this.add.sprite(playerX, playerY, 'sprite');
       otherPlayer.scaleX = 0.5;
       otherPlayer.scaleY = 0.5;
       otherPlayer.setTint(0x0000ff);
-      self.otherPlayers.add(otherPlayer);
+      this.otherPlayers.add(otherPlayer);
     }
   };
-
-// receiving words that are correct and wrong
-
-
 
 };

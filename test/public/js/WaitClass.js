@@ -11,8 +11,13 @@ class WaitClass extends Phaser.Scene {
 
   create() {
 
-    this.image = this.add.image(game.config.width/2, game.config.height/2, "rainbow");
+    this.image = this.add.image(500, 500, "rainbow");
     this.image.setInteractive();
+    const {width, height} = this.sys.game.config;
+
+    this.cameras.main.setBounds(0, 0, width, height);
+    this.cameras.main.setSize(camera_width, camera_height);
+
     this.image.on('pointerdown', () => {
       this.startGame(players[my_player_id]["player_type"]);
     });
@@ -36,18 +41,18 @@ class WaitClass extends Phaser.Scene {
       console.log("Remaining players: ", players);
     });
 
-    socket.on("startGame", (players, playersPos, audiofile) => {
-      this.startGame(players, playersPos, audiofile);
+    socket.on("startGame", (players, playersPos, audiofile,audioID) => {
+      this.startGame(players, playersPos, audiofile,audioID);
     });
   }
 
   update(delta) {
   }
 
-  startGame(players_get, playersPos_get, audiofile_get) {
+  startGame(players_get, playersPos_get, audiofile_get,auidoID_get) {
     players = players_get;
     playersPos = playersPos_get;
-    audio_received.push(audiofile_get);
+    audio_received.push([audiofile_get,audioID_get]);
     console.log("Players: ", players);
     console.log("PlayersPos: ", playersPos);
     console.log("Audiofile: ", audiofile_get);

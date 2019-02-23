@@ -26,9 +26,6 @@ for(i=0;i<audio_ids.length;i++) {
   //audioFiles.push(fs.readFileSync(audio_ids[i]));
 };
 
-
-
-
 //-----------------------------mongo database functions---------------------------------------------------
 
 /*
@@ -225,8 +222,9 @@ function startGame() {
   });
   //send audiofile
   var audio_file = audioFiles[0];
+  var placeholder_id = 'placeholder_id';
 
-  io.emit("startGame", players, playersPos, audio_file);
+  io.emit("startGame", players, playersPos, audio_file,audioFile_id);
 };
 
 //------------------------------------------sockets handlers---------------------------------------------
@@ -249,7 +247,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   socket.on("sendAudio", (data) => {
     fs.writeFile('audio_files/test.wav', Buffer.from(new Uint8Array(data)), ()=>{
-      writeAudio('test.wav');
+      //writeAudio('test.wav');
     }); //complete synchronously
   });
 
@@ -276,9 +274,17 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
     var word_list = transcript.trim().split(/\s+/);
     var num_coords = word_list.length();
+    var coords_array = [];
+    for (var i = 0; i < num_coords; i++) {
+      var x = Math.round(Math.random()*(game_width-40)+20);
+      var y = Math.round(Math.random()*(game_height-40)+20);
+      var coord = [x,y];
+      coords_array.push(coord);
+    }
 
     //NEED TO IMPLEMENT RANDOM SPAWNING
-    //socket.emit(incomingwords)
+    socket.emit('incomingwords',word_list,coords_array,socket.id)
+
   }});
 
   socket.on('collision',(score,item)=>{
