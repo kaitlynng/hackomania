@@ -180,7 +180,6 @@ class Player1S1Class extends Phaser.Scene {
       else if (this.cursors.down.isDown){
           this.player.setVelocityY(500);
       }
-<<<<<<< HEAD
 
       // var gameObjects = this.containers.getChildren();
       // console.log(gameObjects);
@@ -229,9 +228,6 @@ class Player1S1Class extends Phaser.Scene {
 // receiving words that are correct and wrong
 
 
-=======
-  }
-
   addPlayer(player_id) {
     var playerX = playersPos[player_id]['x'];
     var playerY = playersPos[player_id]['y'];
@@ -250,6 +246,6 @@ class Player1S1Class extends Phaser.Scene {
       this.otherPlayers.add(otherPlayer);
     }
   };
->>>>>>> 943c2e21e3b2a9d202fd67438cf56d051ccd517a
+
 
 };
