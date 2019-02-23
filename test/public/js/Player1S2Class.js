@@ -38,8 +38,7 @@ class Player1S2Class extends Phaser.Scene {
       score += 10;
       scoreText.setText('Score: ' + score);
     });
-
-    this.music = getAudio();
+    this.music = getAudio()[0];
     this.image = this.add.sprite(400,525,'testImage').setInteractive();
     this.input.setDraggable(this.image);
     this.input.on('drag',(pointer,gameObject,dragX)=>{
@@ -63,7 +62,7 @@ class Player1S2Class extends Phaser.Scene {
         this.play = 1;
       }
       else{
-        this.music.resume();
+        this.music.play();
         this.play = 1;
       };
     });
@@ -79,7 +78,7 @@ class Player1S2Class extends Phaser.Scene {
         this.play = 2; // paused
       }
       else if (this.play == 2){
-        this.music.resume();
+        this.music.play();
         this.play = 1;
       }
     });

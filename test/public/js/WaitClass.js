@@ -41,18 +41,18 @@ class WaitClass extends Phaser.Scene {
       console.log("Remaining players: ", players);
     });
 
-    socket.on("startGame", (players, playersPos, audiofile) => {
-      this.startGame(players, playersPos, audiofile);
+    socket.on("startGame", (players, playersPos, audiofile,audioID) => {
+      this.startGame(players, playersPos, audiofile,audioID);
     });
   }
 
   update(delta) {
   }
 
-  startGame(players_get, playersPos_get, audiofile_get) {
+  startGame(players_get, playersPos_get, audiofile_get,auidoID_get) {
     players = players_get;
     playersPos = playersPos_get;
-    audio_received.push(audiofile_get);
+    audio_received.push([audiofile_get,audioID_get]);
     console.log("Players: ", players);
     console.log("PlayersPos: ", playersPos);
     console.log("Audiofile: ", audiofile_get);

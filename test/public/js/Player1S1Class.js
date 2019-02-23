@@ -131,6 +131,9 @@ class Player1S1Class extends Phaser.Scene {
           this.player.setVelocityY(500);
       }
 
+<<<<<<< HEAD
+      };
+=======
       // var gameObjects = this.containers.getChildren();
       // console.log(gameObjects);
 
@@ -169,6 +172,7 @@ class Player1S1Class extends Phaser.Scene {
       this.otherPlayers.add(otherPlayer);
     }
   };
+>>>>>>> 513208ea1ed4fd1ccf06e31751eac6d4b307c0fd
 
 // receiving words that are correct and wrong
 <<<<<<< HEAD

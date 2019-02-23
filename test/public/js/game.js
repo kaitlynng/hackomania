@@ -23,8 +23,8 @@ var camera_height = window.innerHeight;
 
 var my_player_id;
 
-scene_keys = ["Start", "Wait", "Player1S2", "Player1S1", "Player2"];
-scene_classes = [StartClass, WaitClass, Player1S2Class, Player1S1Class, Player2Class];
+scene_keys = ["Start", "Wait", "Player1S1", "Player1S2", "Player2"];
+scene_classes = [StartClass, WaitClass, Player1S1Class, Player1S2Class, Player2Class];
 var active_scene;
 
 var players = {};
@@ -90,15 +90,14 @@ function sendAudio() {
 }
 
 function getAudio(){
-  const audioBlobP2 = new Blob([audio_received[0]]);
+  const audioBlobP2 = new Blob([audio_received[0][0]]);
   const audioUrlP2 = URL.createObjectURL(audioBlobP2);
   const audioP2 = new Audio(audioUrlP2);
-  return audioP2;
+  return [audioP2,audio_received[0][1]];
 }
 
 //-------------------------------------sockets---------------------------------------------------------------
 var socket = io.connect();
-
 
 socket.on("newConnection", (data) => {
   my_player_id = data;
