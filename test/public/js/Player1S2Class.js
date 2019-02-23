@@ -38,6 +38,7 @@ class Player1S2Class extends Phaser.Scene {
       score += 10;
       scoreText.setText('Score: ' + score);
     });
+
     this.music = getAudio();
     this.image = this.add.sprite(400,525,'testImage').setInteractive();
     this.input.setDraggable(this.image);
