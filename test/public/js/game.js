@@ -90,9 +90,10 @@ function sendAudio() {
 }
 
 function getAudio(){
-  audioBlobP2 = new Blob([new Uint8Array(audio_received[1])]); //may not work??
-  audioUrl = URL.createObjectURL(audioBlobP2);
-  return new Audio(audioUrl);
+  const audioBlobP2 = new Blob([audio_received[0]]);
+  const audioUrlP2 = URL.createObjectURL(audioBlobP2);
+  const audioP2 = new Audio(audioUrlP2);
+  return audioP2;
 }
 
 //-------------------------------------sockets---------------------------------------------------------------
