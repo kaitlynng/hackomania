@@ -65,7 +65,7 @@ class Player1S1Class extends Phaser.Scene {
 
     socket.emit('debugging', "hello");
     socket.on('newWords', (words, wordsPos, player_id) => {
-      if (player_id == '12345') { //players[my_player_id]['partner_id']
+      if (player_id == players[my_player_id]["partner_id"]) { //players[my_player_id]['partner_id']
         for (var i = 0; i < words.length; i++) {
           var wordX = wordsPos[i][0];
           var wordY = wordsPos[i][1];
@@ -95,11 +95,14 @@ class Player1S1Class extends Phaser.Scene {
         var textChild = this.arrayCon[j].first;
         console.log(textChild.text);
       };
+      console.log(this.other_words_dict);
     });
 
     socket.on('otherCollision', (player_id) => {
+      console.log("In other collision");
       var other_container = this.other_words_dict[player_id];
-      rem_container = other_container.getChildren()[0];
+      console.log(other_container);
+      var rem_container = other_container.getChildren()[0];
       other_container.remove(rem_container);
       rem_container.setVisible(false);
     });
