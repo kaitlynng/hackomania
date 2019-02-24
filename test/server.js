@@ -320,7 +320,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
     io.emit("playerDisconnect", socket.id);
   });
 
-  setTimeout(stopfunction, 10);
+  setTimeout(stopfunction, 1000);
   function stopfunction(){
     io.emit("EndGame");
 
