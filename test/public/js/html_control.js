@@ -16,7 +16,7 @@ function checkHTML(active_scene) {
   }
   else if(active_scene == "Player2") {
     $('#start-div').hide();
-    $('#player2-div').show();
+    $('#player2-div').show
     $('#leaderboard').hide();
   };
   else if(active_scene == "LeaderboardScene") {
@@ -24,6 +24,11 @@ function checkHTML(active_scene) {
     $('#player2-div').hide();
     $('#leaderboard').show();
   };
+  else {
+    $('#start-div').hide();
+    $('#player2-div').hide();
+    $('#leaderboard').hide();
+  }
 }
 
 function reloadPlayer(audioUrl) {

@@ -134,7 +134,7 @@ class Player1S1Class extends Phaser.Scene {
       });
     })
 
-    socket.on('EndGame',() => {
+    socket.on('EndGame', () => {
       this.scene.stop();
       sceneChange("LeaderboardScene");
       this.scene.start("LeaderboardScene");
@@ -220,7 +220,6 @@ class Player1S1Class extends Phaser.Scene {
 //-----!!!KAITLYN LOOK HERE!!!---splitting sentence into words and creating associated containers
 /*    var sentence = prompt("Please enter some Singlish");
     this.words = sentence.split(" ");
->>>>>>> 295ccb8cf57845a98e5827b004ba58c571ed2729
 
     //containers group
     this.containers = this.physics.add.group({

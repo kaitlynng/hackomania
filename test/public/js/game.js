@@ -30,6 +30,7 @@ var players = {};
 var playersPos = {};
 var score = 0;
 
+
 var record_event = false;
 var mediaRecorder;
 var audioChunks = [];
@@ -39,6 +40,12 @@ var audioBuffer;
 var audioNumber;
 
 var audio_received = [];
+var audioPrompts = ['Order your favorite meal at the hawker centre',
+'Break up with your girlfriend','Call the police about teenagers making noise at 11pm',
+'What is your hobby?','What do you work as?', 'Invite your friend over for dinner',
+'Act out a situation in the wet market, where you bargain for vegetables',
+'Approach a school boy who does not give up his seat for a preganant woman',
+'Talk about your last holiday'];
 
 var sendAudioReader = new FileReader();
 sendAudioReader.onload = (event) => {
