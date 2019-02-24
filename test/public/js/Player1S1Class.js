@@ -66,7 +66,7 @@ class Player1S1Class extends Phaser.Scene {
         socket.emit('collision', score, my_player_id);
       };
     };
-    
+
     socket.on('newWords', (words, wordsPos, player_id) => {
       if (player_id == players[my_player_id]["partner_id"]) { //players[my_player_id]['partner_id']
         for (var i = 0; i < words.length; i++) {
