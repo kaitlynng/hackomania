@@ -15,7 +15,11 @@ function checkHTML(active_scene) {
   else if(active_scene == "Player2") {
     $('#start-div').hide();
     $('#player2-div').show();
-  };
+  }
+  else {
+    $('#start-div').hide();
+    $('#player2-div').hide();
+  }
 }
 
 function reloadPlayer(audioUrl) {

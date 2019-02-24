@@ -320,7 +320,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
     io.emit("playerDisconnect", socket.id);
   });
 
-  setTimeout(stopfunction, 5000)
+  setTimeout(stopfunction, 1000*180);
   function stopfunction(){
     function testSort(){
       playerScores = {id1:3,id2:4,id3:1};

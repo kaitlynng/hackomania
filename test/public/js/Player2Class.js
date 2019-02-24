@@ -36,7 +36,6 @@ class Player2Class extends Phaser.Scene {
 
 		var playBox = this.add.graphics();
 		playBox.fillStyle(0xffffff, 0.8);
-		playBox.fillRect(350,55,300,2);
 
 		$('#transcription').keypress((event)=> {
     if (event.which == 13) {
@@ -88,6 +87,13 @@ class Player2Class extends Phaser.Scene {
 
 
 
+		this.add.text(600,50, "report audio",{fill:'#0f0'});
+		this.RestartButton = this.add.text(400,50,"restart audio",{fill:'#0f0'}).setInteractive();
+		this.RestartButton.on('pointerdown',()=>{
+			this.music = getAudio(this.audioNumber)[0];
+			this.music.play();
+			this.play = 1;
+		})
 		this.pauseButton = this.add.text(200,50,"pause audio",{fill:'#0f0'}).setInteractive();
 		this.pauseButton.on('pointerdown',() => {
 			this.music.pause();
@@ -106,7 +112,7 @@ class Player2Class extends Phaser.Scene {
 			this.scene.stop();
 			sceneChange("LeaderboardScene");
 			this.scene.start("LeaderboardScene");
-		})
+		});
 
 	}
 
@@ -125,7 +131,7 @@ class Player2Class extends Phaser.Scene {
 		console.log('this.entered is '+ this.entered);
 		if (this.entered == 1) {
 			var transcription = document.getElementById("transcription").value;
-			$('#transcription').attr('value', '');
+			$('#transcription').val('');
 			socket.emit('finishTranscript',transcription, audio_received[this.audioNumber][1], (audiofile_get, audioID_get) => {
 				audio_received.push([audiofile_get, audioID_get]);
 				this.audioNumber += 1;
