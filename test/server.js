@@ -322,7 +322,10 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   setTimeout(stopfunction, 1000*180);
   function stopfunction(){
-    function testSort(){
+    io.emit("EndGame",);
+
+  };
+  function testSort(){
       playerScores = {id1:3,id2:4,id3:1};
       players = {'id1':{username:'username1'},'id2':{username:'username2'},'id3':{username:'username3'}};
       var sortedScores = Object.keys(playerScores).map(function(key){
@@ -339,8 +342,6 @@ io.on("connection", function (socket) { //new instance is created with each new 
       return sortedScores.slice(0,3);
 
     }
-    var sortedScore = testSort();
-    io.emit("EndGame",sortedScore);
-
-  };
+  var sortedScore = testSort();
+  socket.on('loadLeaderBoard',sortedScore);
 });

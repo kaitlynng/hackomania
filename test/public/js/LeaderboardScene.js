@@ -13,6 +13,11 @@ class LeaderboardScene extends Phaser.Scene {
   // }
 
   create() {
+      socket.emit('leaderboard');
+      socket.on('loadingLeaderboard',(sortedScore)=>{
+
+      });
+
 
     // Table for leaderboard
       function tableCreate() {
