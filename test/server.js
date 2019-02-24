@@ -278,12 +278,14 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   //
 
-  socket.on('finishTranscript',(transcript,audioFile_id)=>{
+  socket.on('finishTranscript',(transcript,audioFile_id, fn)=>{
 
     postTranscript(transcript,audioFile_id);
+    var audio_buffer;
+    var audio_id;
     getAudioByKeys({},function(){
-      var [audio_buffer, audio_id] = getAudioFromDB(socket.id);
-      socket.emit('loadAudio', audio_buffer, audio_id);
+      [audio_buffer, audio_id] = getAudioFromDB(socket.id);
+      fn(audio_buffer, audio_id);
     });
 
     var word_list = transcript.trim().split(' ');
