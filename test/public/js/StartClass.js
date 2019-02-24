@@ -13,7 +13,6 @@ class StartClass extends Phaser.Scene {
     const {width, height} = this.sys.game.config;
     this.image = this.add.image(630, 400, "welcome");
     this.image.setInteractive();
-
     this.cameras.main.setBounds(0, 0, width, height);
     this.cameras.main.setSize(cameraWidth, cameraHeight);
 
@@ -30,18 +29,18 @@ class StartClass extends Phaser.Scene {
   }
 
   enterGame(username) {
-    if(username=="") {
-      alert("Please enter a username!");
-    } else if (username!="" && audioBlob == null){
-      alert("Please record some Singlish!");
-    } else {
-      sendAudio();
+    // if(username=="") {
+    //   alert("Please enter a username!");
+    // } else if (username!="" && audioBlob == null){
+    //   alert("Please record some Singlish!");
+    // } else {
+    //   sendAudio();
       const {width, height} = this.sys.game.config;
       socket.emit("joinGame", username, width, height, (data) => {
         players = data;
         sceneChange("Wait");
         this.scene.start("Wait");
       });
-    }
+//    }
   }
 }

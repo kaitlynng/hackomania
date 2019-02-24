@@ -151,7 +151,7 @@ function callconsole(arg,string){
 
 
 conn.once('open',()=>{
-  deleteAudioByID("5c71157da8c2dfa20ece96ba");
+  //deleteAudioByID("5c71157da8c2dfa20ece96ba");
   /*
   postTranscript("wabalubba",callconsole);
   getObject('transcripts',{transText:"wabalubba"},callconsole);
@@ -176,10 +176,13 @@ var game_height;
 
 var players = {};
 var playersPos = {};
+var playersScores = {};
 
-var player_num = 2;
+var player_num = 4;
 
 var partners = []; //[[partner1id, partner2id], [partner1id, partner2id], [partner1id, partner2id]]
+
+var audio_index = 0;
 
 function createPlayerAttrb(player_id, username) {
   var player_attrb = {
@@ -193,6 +196,13 @@ function createPlayerAttrb(player_id, username) {
   };
   return player_attrb;
 };
+
+function getAudioFomDB() {
+  var audio_array = audioFiles[audio_index];
+  audio_index = audio_index +1;
+  audio_index = ((audio_index>audioFiles.length-1) ? 0 : audio_index);
+  return [audio_array, 'placeholder_id'];
+}
 
 function startGame() {
   console.log("In startgame");
@@ -211,20 +221,22 @@ function startGame() {
     partners.push([temp[0][i], temp[1][i]]);
   };
 
-  //init players positions
+  //init players positions and scores
   Object.keys(players).forEach((id) => {
     if(players[id]["player_type"] == 1) {
       playersPos[id] = {
         x: Math.round(Math.random()*(game_width-40)+20),
         y: Math.round(Math.random()*(game_height-40)+20),
       };
+      playersScores[id] = 0;
     }
   });
   //send audiofile
   var audio_file = audioFiles[0];
   var placeholder_id = 'placeholder_id';
+  var [audio_buffer, audio_id] = getAudioFromDB();
 
-  io.emit("startGame", players, playersPos, audio_file,placeholder_id);
+  io.emit("startGame", players, playersPos, audio_buffer, audio_id);
 };
 
 //------------------------------------------sockets handlers---------------------------------------------
@@ -256,25 +268,28 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   //Player movement socket
   socket.on('playerMove',(new_pos)=>{
+    console.log(new_pos);
     playersPos[socket.id] = new_pos;
+    console.log(playersPos);
+    console.log(playersPos[socket.id]);
     var id = socket.id;
-    socket.broadcast.emit('otherPlayerMove',{id:new_pos});
+    socket.broadcast.emit('otherPlayerMove', id, new_pos);
   });
 
   //
 
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
-    console.log('got to callback');
 
     postTranscript(transcript,audioFile_id);
     getAudioByKeys({},function(){
-      var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav')
-      audio_file = fs.readFileSync(json_path);
-      socket.emit('loadAudio',audio_file);
-    })
+      var [audio_buffer, audio_id] = getAudioFromDB(socket.id);
+      socket.emit('loadAudio', audio_buffer, audio_id);
+    });
 
-    var word_list = transcript.trim().split(/\s+/);
+    var word_list = transcript.trim().split(' ');
+
     var num_coords = word_list.length;
+    console.log(num_coords);
     var coords_array = [];
     for (var i = 0; i < num_coords; i++) {
       var x = Math.round(Math.random()*(game_width-40)+20);
@@ -282,23 +297,16 @@ io.on("connection", function (socket) { //new instance is created with each new 
       var coord = [x,y];
       coords_array.push(coord);
     }
+    console.log(word_list,coords_array,socket.id);
+    socket.broadcast.emit('newWords',word_list,coords_array,socket.id);
 
-    //NEED TO IMPLEMENT RANDOM SPAWNING
-    socket.emit('incomingwords',word_list,coords_array,socket.id)
-
+    io.to(players[socket.id]["partner_id"]).emit("loadAudio", audio_buffer, audio_id);
   });
 
-  socket.on('collision',(score,item)=>{
-
-  })
-
-
-
-
-  //Playerscenes sockets
-  socket.on("debugging", (string) => {
-    socket.emit("newWords", ["haha", "hoho", "hehe"], [[12, 31], [55, 120], [405, 1102]], '12345');
-  })
+  socket.on('collision',(score,socketid)=>{
+    playersScores[socketid] = score;
+    socket.broadcast.emit('otherCollision',players[socketid]["partner_id"]);
+  });
 
 
   socket.on("disconnect", function () { //do not pass socket as parameter; it takes socket object from parent function
