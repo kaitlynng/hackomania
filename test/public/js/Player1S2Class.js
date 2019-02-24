@@ -3,7 +3,6 @@ class Player1S2Class extends Phaser.Scene {
     super({key:"Player1S2"});
   }
 
-
   // preload() {
   // 	this.load.html("leaderboard", "assets/leaderboard.html",50,50);
   // }
@@ -30,13 +29,13 @@ class Player1S2Class extends Phaser.Scene {
 
 
     // this.leaderboard = this.add.image(700, 50, 'leaderboard');
-
+    audioNumber = 0;
     let ourGame = this.scene.get('Player1S1');
     ourGame.events.on('addScore', () => {
       score += 10;
       scoreText.setText('Score: ' + score);
     });
-    this.music = getAudio()[0];
+    this.music = getAudio(audioNumber)[0];
     this.image = this.add.sprite(400,525,'testImage').setInteractive();
     this.input.setDraggable(this.image);
     this.input.on('drag',(pointer,gameObject,dragX)=>{
@@ -95,6 +94,12 @@ class Player1S2Class extends Phaser.Scene {
       socket.on('EndGame',() => {
         this.scene.stop();
       });
+
+      socket.on('loadAudio',(audiofile_get, audioID_get) => {
+        audio_received.push([audiofile_get, audioID_get]);
+        console.log(audio_received);
+      });
+
 
   }
 

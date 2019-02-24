@@ -13,7 +13,6 @@ class StartClass extends Phaser.Scene {
     const {width, height} = this.sys.game.config;
     this.image = this.add.image(630, 300, "welcome");
     this.image.setInteractive();
-
     this.cameras.main.setBounds(0, 0, width, height);
     this.cameras.main.setSize(cameraWidth, cameraHeight);
 

@@ -36,6 +36,8 @@ var audioChunks = [];
 var audioBlob;
 var audioBuffer;
 
+var audioNumber;
+
 var audio_received = [];
 
 var sendAudioReader = new FileReader();
@@ -89,8 +91,8 @@ function sendAudio() {
   sendAudioReader.readAsArrayBuffer(audioBlob);
 }
 
-function getAudio(){
-  const audioBlobP2 = new Blob([audio_received[0][0]]);
+function getAudio(index){
+  const audioBlobP2 = new Blob([audio_received[index][0]]);
   const audioUrlP2 = URL.createObjectURL(audioBlobP2);
   const audioP2 = new Audio(audioUrlP2);
   return [audioP2,audio_received[0][1]];

@@ -11,9 +11,7 @@ class Player1S1Class extends Phaser.Scene {
 
   create() {
     //basic config
-    console.log("in create");
     const {width, height} = this.sys.game.config;
-    console.log("What's up");
     this.physics.world.setBounds(0, 0, width, height);
     const bg = this.add.tileSprite(0, 0, width, height, 'tile');
     bg.setOrigin(0,0);
@@ -21,6 +19,8 @@ class Player1S1Class extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.otherPlayers = this.add.group();
     // this.otherPlayersPos = {};
+    this.wordCount = 0;
+    this.audioChange = [];
 
     Object.keys(playersPos).forEach((id) => {
       if (id === my_player_id) {
@@ -28,7 +28,6 @@ class Player1S1Class extends Phaser.Scene {
       } else {
         this.addOtherPlayers(id); //adds other players' characters
       };
-      console.log("loop");
       // this.addPlayer(id);
     });
 
@@ -62,14 +61,25 @@ class Player1S1Class extends Phaser.Scene {
       if(arrayCon[0] === col_container) {
         this.myContainers.remove(col_container);
         col_container.setVisible(false);
+        this.wordCount++;
         this.events.emit('addScore');
         socket.emit('collision', score, my_player_id);
+        if(this.wordCount == this.audioChange[0]) {
+          console.log("Finished one word");
+          //insert change audio function here
+          this.audioChange.shift();
+          this.wordCount = 0;
+          audioNumber ++;
+          console.log(audioNumber);
+          this.scene.get("Player1S2").music = getAudio(audioNumber)[0];
+        };
       };
     };
 
-    socket.emit('debugging', "hello");
     socket.on('newWords', (words, wordsPos, player_id) => {
       if (player_id == players[my_player_id]["partner_id"]) { //players[my_player_id]['partner_id']
+        this.audioChange.push(words.length);
+        console.log("Audio change: ", this.audioChange);
         for (var i = 0; i < words.length; i++) {
           var wordX = wordsPos[i][0];
           var wordY = wordsPos[i][1];
@@ -80,7 +90,7 @@ class Player1S1Class extends Phaser.Scene {
           var yes = this.add.container(wordX, wordY, [text]).setSize(80, 30);
           this.myContainers.add(yes); //this adds each new container to the myContainers group
         }
-        // console.log(this.myContainers.getChildren());
+
       } else {
         this.other_words_dict[player_id] = this.physics.add.group();
         for (var i = 0; i < words.length; i++) {
@@ -97,15 +107,11 @@ class Player1S1Class extends Phaser.Scene {
       this.arrayCon = this.myContainers.getChildren();
       for (var j = 0; j < this.arrayCon.length; j++) {
         var textChild = this.arrayCon[j].first;
-        console.log(textChild.text);
       };
-      console.log(this.other_words_dict);
     });
 
     socket.on('otherCollision', (player_id) => {
-      console.log("In other collision");
       var other_container = this.other_words_dict[player_id];
-      console.log(other_container);
       var rem_container = other_container.getChildren()[0];
       other_container.remove(rem_container);
       rem_container.setVisible(false);
@@ -120,14 +126,10 @@ class Player1S1Class extends Phaser.Scene {
     });
 
     socket.on('otherPlayerMove', (id, new_pos) => {
-      console.log('other player moved');
-      console.log('new_pos:' + new_pos);
-      console.log(id);
       this.otherPlayers.getChildren().forEach((otherPlayer) => {
         if (id === otherPlayer.playerId) {
           otherPlayer.x = new_pos['x'];
           otherPlayer.y = new_pos['y'];
-          console.log('success!');
         }
       });
     })
@@ -158,7 +160,6 @@ class Player1S1Class extends Phaser.Scene {
 
     if (this.old_pos && (this.player.x !== this.old_pos['x'] || this.player.y !== this.old_pos.y)) {
       socket.emit('playerMove', {x: this.player.x, y: this.player.y});
-      console.log('i moved');
     };
 
     this.old_pos = {

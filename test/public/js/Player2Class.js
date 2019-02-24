@@ -12,9 +12,10 @@ class Player2Class extends Phaser.Scene {
 
 	create(){
 		//socket.emit('finishTranscript','firstString','secondString');
-		this.audioNumber = 1;
-		this.image = this.add.sprite(400,100,'testImage').setInteractive();
-		this.music = getAudio()[0];
+		this.entered = 0;
+		this.audioNumber = 0;
+		this.image = this.add.sprite(450,55,'testImage').setInteractive();
+		this.music = getAudio(this.audioNumber)[0];
 		this.input.setDraggable(this.image);
 		this.input.on('drag',(pointer,gameObject,dragX)=>{
 			var maxX = 600;
@@ -22,7 +23,6 @@ class Player2Class extends Phaser.Scene {
 			gameObject.x = Math.min(maxX, Math.max(minX,dragX));
 			var percentage = (gameObject.x - minX)/(maxX - minX);
 			this.music.setSeek(this.music.duration* percentage);
-//			console.log(this.music.seek);
 		});
 
 		/*
@@ -36,9 +36,18 @@ class Player2Class extends Phaser.Scene {
 
 		var playBox = this.add.graphics();
 		playBox.fillStyle(0xffffff, 0.8);
-		playBox.fillRect(300,100,300,2);
+		playBox.fillRect(350,55,300,2);
+
+		$('#transcription').keypress((event)=> {
+    if (event.which == 13) {
+        event.preventDefault();
+				this.entered = 1;
+    }
+		});
+
 
 		this.play = 0;
+		this.typing = 0;
 		this.playButton = this.add.text(50,50,"play audio",{fill:'#0f0'}).setInteractive();
 		this.playButton.on('pointerdown',()=>{
 			if(this.music.seek == 0){
@@ -51,42 +60,38 @@ class Player2Class extends Phaser.Scene {
 			};
 		});
 
+		$("#transcription").focus(() => {
+			this.typing = 1;
+
+		});
 		// space bar pause and play
 		this.input.keyboard.on('keydown-SPACE', (event) => {
-			if (this.play == 0) {
+			if (this.play == 0 && this.typing == 0) {
 				this.music.play();
 				this.play = 1; //playing
 			}
-			else if (this.play == 1){
+			else if (this.play == 1 && this.typing == 0){
 				this.music.pause();
 				this.play = 2; // paused
 			}
-			else if (this.play == 2){
+			else if (this.play == 2 && this.typing == 0){
 				this.music.play();
 				this.play = 1;
 			}
-			console.log('Hello from the A Key!');
 		});
-
 
 		this.enter = this.add.text(660,340,"Enter", {fill:'#0f0'}).setInteractive();
 		this.enter.on('pointerdown', () => {
-			var transcription = document.getElementById("transcription").value;
-			socket.emit('finishTranscript',transcription, audio_received[0][1]);
-			console.log('sent transcript');
-			socket.on('loadAudio',()=>{
-				console.log('heard loadAudio');
-			})
-			this.audioNumber += 1;
-			this.music = this.sound.add('testAudio'+ this.audioNumber); //SOCKETS! send ID / thing
-			this.play = 0;
+			this.entered = 1;
+
 		});
+
+
 
 		this.pauseButton = this.add.text(200,50,"pause audio",{fill:'#0f0'}).setInteractive();
 		this.pauseButton.on('pointerdown',() => {
 			this.music.pause();
 			this.play = 2;
-//			console.log(this.music.seek);
 		});
 		this.i = 0;
 
@@ -117,5 +122,20 @@ class Player2Class extends Phaser.Scene {
 		if (this.music.seek>this.music.duration){
 			this.music.stop();
 		};
+		console.log('this.entered is '+ this.entered);
+		if (this.entered == 1) {
+			var transcription = document.getElementById("transcription").value;
+			$('#transcription').attr('value', '');
+			socket.emit('finishTranscript',transcription, audio_received[this.audioNumber][1], (audiofile_get, audioID_get) => {
+				audio_received.push([audiofile_get, audioID_get]);
+				this.audioNumber += 1;
+				console.log(audio_received);
+				console.log('audionumber is '+ this.audioNumber);
+				this.music = getAudio(this.audioNumber)[0];
+			});
+
+			this.play = 0;
+			this.entered=0;
+		}
 	}
 };
