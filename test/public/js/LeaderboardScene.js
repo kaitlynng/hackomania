@@ -15,19 +15,18 @@ class LeaderboardScene extends Phaser.Scene {
   create() {
       socket.emit('leaderboard');
       socket.on('loadingLeaderboard',(sortedScore)=>{
+        $('#leaderboard').val(sortedScores);
 
+        var table = document.getElementById("table");
+        for (var i=0; i<table.rows.length; i++){
+          for (var j=0; j<table.rows[i].cells.length; j++) {
+            table.rows[i].cells[j].innerHTML = sortedScore[i][j];
+          }
+        }
       });
 
 
-    $('#leaderboard').val(sortedScores);
 
-    var array = []
-    var table = document.getElementById("table");
-    for (var i=0; i<table.rows.length; i++){
-      for (var j=0; j<table.rows[i].cells.length; j++) {
-        table.rows[i].cells[j].innerHTML = array[i][j];
-      }
-    }
 
     // Table for leaderboard
       // function tableCreate() {

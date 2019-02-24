@@ -320,34 +320,29 @@ io.on("connection", function (socket) { //new instance is created with each new 
     io.emit("playerDisconnect", socket.id);
   });
 
-  setTimeout(stopfunction, 1000*180);
+  setTimeout(stopfunction, 1000);
   function stopfunction(){
-<<<<<<< HEAD
-    io.emit("EndGame", scoresList);
-  };
-
-=======
-    io.emit("EndGame",);
+    io.emit("EndGame");
 
   };
-  function testSort(){
-      playerScores = {id1:3,id2:4,id3:1};
-      players = {'id1':{username:'username1'},'id2':{username:'username2'},'id3':{username:'username3'}};
-      var sortedScores = Object.keys(playerScores).map(function(key){
-        return[key,playerScores[key]];
-      });
-      sortedScores.sort(function(first,second){
-        return second[1]-first[1];
-      })
 
-      console.log(sortedScores)
-      for(var i=0;i<sortedScores.length;i++){
-        sortedScores[i][0] = players[sortedScores[i][0]].username;
+  socket.on('leaderboard',()=>{
+    function testSort(){
+        var sortedScores = Object.keys(playerScores).map(function(key){
+          return[key,playerScores[key]];
+        });
+        sortedScores.sort(function(first,second){
+          return second[1]-first[1];
+        })
+
+        console.log(sortedScores)
+        for(var i=0;i<sortedScores.length;i++){
+          sortedScores[i][0] = players[sortedScores[i][0]].username;
+        }
+        return sortedScores.slice(0,3);
+
       }
-      return sortedScores.slice(0,3);
-
-    }
-  var sortedScore = testSort();
-  socket.on('loadLeaderBoard',sortedScore);
->>>>>>> b6b5f22f42ca56b241af35d3b74f3b29225e09d9
+    var sortedScore = testSort();
+    socket.emit('loadingLeaderboard',sortedScore);
+  });
 });

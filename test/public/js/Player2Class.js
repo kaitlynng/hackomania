@@ -128,7 +128,6 @@ class Player2Class extends Phaser.Scene {
 		if (this.music.seek>this.music.duration){
 			this.music.stop();
 		};
-		console.log('this.entered is '+ this.entered);
 		if (this.entered == 1) {
 			var transcription = document.getElementById("transcription").value;
 			$('#transcription').val('');
