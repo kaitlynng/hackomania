@@ -177,7 +177,7 @@ var game_height;
 var players = {};
 var playersPos = {};
 
-var player_num = 2;
+var player_num = 4;
 
 var partners = []; //[[partner1id, partner2id], [partner1id, partner2id], [partner1id, partner2id]]
 
@@ -256,9 +256,12 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   //Player movement socket
   socket.on('playerMove',(new_pos)=>{
+    console.log(new_pos);
     playersPos[socket.id] = new_pos;
+    console.log(playersPos);
+    console.log(playersPos[socket.id]);
     var id = socket.id;
-    socket.broadcast.emit('otherPlayerMove',{id:new_pos});
+    socket.broadcast.emit('otherPlayerMove', id, new_pos);
   });
 
   //
