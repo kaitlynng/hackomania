@@ -319,6 +319,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   setTimeout(stopfunction, 5000)
   function stopfunction(){
-    io.emit("EndGame");
+    io.emit("EndGame", scoresList);
   };
+
 });
