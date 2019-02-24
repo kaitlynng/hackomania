@@ -289,19 +289,12 @@ io.on("connection", function (socket) { //new instance is created with each new 
       coords_array.push(coord);
     }
     console.log(word_list,coords_array,socket.id);
-    socket.emit('newWords',word_list,coords_array,socket.id);
-  });
-
-
-  //Playerscenes sockets
-  socket.on("debugging", (string) => {
-    socket.emit("newWords", ["number1", "number2", "number3"], [[12, 31], [55, 120], [405, 1102]], '12345');
-    socket.emit("newWords", ["lala", "lolo", "lele"], [[34, 280], [11, 142], [805, 1020]], '54321');
+    socket.broadcast.emit('newWords',word_list,coords_array,socket.id);
   });
 
   socket.on('collision',(score,socketid)=>{
     playersScores[socketid] = score;
-    socket.emit('otherCollision',socketid);
+    socket.broadcast.emit('otherCollision',players[socketid]["partner_id"]);
   });
 
 
