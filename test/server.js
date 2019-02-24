@@ -311,14 +311,38 @@ io.on("connection", function (socket) { //new instance is created with each new 
   });
 
 
+
+
+
   socket.on("disconnect", function () { //do not pass socket as parameter; it takes socket object from parent function
     console.log("User disconnected: " + socket.id);
     delete players[socket.id];
     io.emit("playerDisconnect", socket.id);
   });
 
-  setTimeout(stopfunction, 1000*180);
+  setTimeout(stopfunction, 1000);
   function stopfunction(){
     io.emit("EndGame");
+
   };
+
+  socket.on('leaderboard',()=>{
+    function testSort(){
+        var sortedScores = Object.keys(playerScores).map(function(key){
+          return[key,playerScores[key]];
+        });
+        sortedScores.sort(function(first,second){
+          return second[1]-first[1];
+        })
+
+        console.log(sortedScores)
+        for(var i=0;i<sortedScores.length;i++){
+          sortedScores[i][0] = players[sortedScores[i][0]].username;
+        }
+        return sortedScores.slice(0,3);
+
+      }
+    var sortedScore = testSort();
+    socket.emit('loadingLeaderboard',sortedScore);
+  });
 });

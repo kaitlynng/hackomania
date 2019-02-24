@@ -4,23 +4,36 @@ class WaitClass extends Phaser.Scene {
     super({key:"Wait"}); //this class will be referred by "Example1"
   } //called when the class is created
 
+
   //load assets
   preload() {
-    this.load.image("rainbow", "../assets/sprites.png");
+    this.load.image("welcome", "../assets/jiazua-title.png");
+    this.load.image("start-background", "../assets/jiazua-background.png");
   }
+
 
   create() {
 
-    this.image = this.add.image(600, 350, "rainbow");
-    this.image.setInteractive();
-    const {width, height} = this.sys.game.config;
 
+    const {width, height} = this.sys.game.config;
+    this.background = this.add.image(0, 0, "start-background").setOrigin(0, 0);
+    this.image = this.add.image(640, 300, "welcome").setDisplaySize(1200, 700);
+    this.image.setInteractive();
     this.cameras.main.setBounds(0, 0, width, height);
     this.cameras.main.setSize(cameraWidth, cameraHeight);
+
+    // this.image = this.add.image(600, 350, "rainbow");
+    // this.image.setInteractive();
+    // const {width, height} = this.sys.game.config;
+    //
+    // this.cameras.main.setBounds(0, 0, width, height);
+    // this.cameras.main.setSize(cameraWidth, cameraHeight);
 
     this.image.on('pointerdown', () => {
       this.startGame(players[my_player_id]["player_type"]);
     });
+
+    this.add.text(490,470, "Waiting for other players...",{fill:'#10B5E2'});
 
     if(debugging) {
       console.log("My id: ", my_player_id);
@@ -46,6 +59,12 @@ class WaitClass extends Phaser.Scene {
     });
   }
 
+
+//
+
+
+
+//
   update(delta) {
   }
 

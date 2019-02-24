@@ -24,6 +24,13 @@
   position: absolute;
 }
 
+#leaderboard {
+  width: 20%;
+  top: 200px;
+  left; 300px;
+  position: absolute;
+}
+
 input[type=text] {
   width: 80%;
   margin:0px 10px;
