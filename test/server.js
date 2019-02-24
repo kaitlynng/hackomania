@@ -197,7 +197,7 @@ function createPlayerAttrb(player_id, username) {
   return player_attrb;
 };
 
-function getAudioFomDB() {
+function getAudioFromDB() {
   var audio_array = audioFiles[audio_index];
   audio_index = audio_index +1;
   audio_index = ((audio_index>audioFiles.length-1) ? 0 : audio_index);
