@@ -91,6 +91,11 @@ class Player1S2Class extends Phaser.Scene {
 
         this.i = 0;
 
+        socket.on('loadAudio',(audiofile_get, audioID_get) => {
+          audio_received.push([audiofile_get, audioID_get]);
+          console.log(audio_received);
+        });
+
 
   }
 
