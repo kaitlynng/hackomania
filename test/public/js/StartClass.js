@@ -34,14 +34,17 @@ class StartClass extends Phaser.Scene {
   }
 
   enterGame(username) {
+    /*
     if(username=="") {
       alert("Please enter a username!");
     } 
     //else if (username!="" && audioBlob == null){
-    //  alert("Please record some Singlish!");
-    //} 
+      alert("Please record some Singlish!");
+    } 
     else {
+
       sendAudio();
+      */
       const {width, height} = this.sys.game.config;
       socket.emit("joinGame", username, width, height, (data) => {
         players = data;
