@@ -22,6 +22,8 @@ class StartClass extends Phaser.Scene {
       username = ((username == null) ? "" : username);
       this.enterGame(username);
     });
+
+    this.add.text(600,50, "Respond to this prompt: " + audioPrompts[Math.floor(Math.random() * (audioPrompts.length - 0 + 1)) + 0],{fill:'#0f0'});
   }
 
   update(delta) {
