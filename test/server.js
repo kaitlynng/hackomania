@@ -249,7 +249,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   socket.on("sendAudio", (data) => {
     fs.writeFile('audio_files/test.wav', Buffer.from(new Uint8Array(data)), ()=>{
-      writeAudio('test.wav');
+      //writeAudio('test.wav');
     }); //complete synchronously
   });
 
