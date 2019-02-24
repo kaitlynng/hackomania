@@ -66,8 +66,7 @@ class Player1S1Class extends Phaser.Scene {
         socket.emit('collision', score, my_player_id);
       };
     };
-
-    socket.emit('debugging', "hello");
+    
     socket.on('newWords', (words, wordsPos, player_id) => {
       if (player_id == players[my_player_id]["partner_id"]) { //players[my_player_id]['partner_id']
         for (var i = 0; i < words.length; i++) {
@@ -130,15 +129,8 @@ class Player1S1Class extends Phaser.Scene {
           console.log('success!');
         }
       });
-<<<<<<< HEAD
-    })
-=======
-      // var player_id = Object.keys(new_pos)[0];
-      // this.otherPlayers[player_id] = new_pos[player_id];
     });
->>>>>>> 6a5260cb7adea9d129cd21a0684115c9f1568890
-
-  };
+  }
 
   update(delta) {
     this.player.setVelocity(0);

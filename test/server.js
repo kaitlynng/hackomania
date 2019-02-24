@@ -182,6 +182,8 @@ var player_num = 4;
 
 var partners = []; //[[partner1id, partner2id], [partner1id, partner2id], [partner1id, partner2id]]
 
+var audio_index = 0;
+
 function createPlayerAttrb(player_id, username) {
   var player_attrb = {
     player_id: player_id,
@@ -194,6 +196,13 @@ function createPlayerAttrb(player_id, username) {
   };
   return player_attrb;
 };
+
+function getAudioFomDB() {
+  var audio_array = audioFiles[audio_index];
+  audio_index = audio_index +1;
+  audio_index = ((audio_index>audioFiles.length-1) ? 0 : audio_index);
+  return [audio_array, 'placeholder_id'];
+}
 
 function startGame() {
   console.log("In startgame");
@@ -225,8 +234,9 @@ function startGame() {
   //send audiofile
   var audio_file = audioFiles[0];
   var placeholder_id = 'placeholder_id';
+  var [audio_buffer, audio_id] = getAudioFromDB();
 
-  io.emit("startGame", players, playersPos, audio_file,placeholder_id);
+  io.emit("startGame", players, playersPos, audio_buffer, audio_id);
 };
 
 //------------------------------------------sockets handlers---------------------------------------------
@@ -272,9 +282,8 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
     postTranscript(transcript,audioFile_id);
     getAudioByKeys({},function(){
-      var json_path = path.join(__dirname, 'audio_files', 'placeholder.wav');
-      audio_file = fs.readFileSync(json_path);
-      socket.emit('loadAudio',audio_file);
+      var [audio_buffer, audio_id] = getAudioFromDB(socket.id);
+      socket.emit('loadAudio', audio_buffer, audio_id);
     });
 
     var word_list = transcript.trim().split(' ');
@@ -290,6 +299,8 @@ io.on("connection", function (socket) { //new instance is created with each new 
     }
     console.log(word_list,coords_array,socket.id);
     socket.broadcast.emit('newWords',word_list,coords_array,socket.id);
+
+    io.to(players[socket.id]["partner_id"]).emit("loadAudio", audio_buffer, audio_id);
   });
 
   socket.on('collision',(score,socketid)=>{
