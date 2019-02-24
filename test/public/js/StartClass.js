@@ -45,13 +45,13 @@ class StartClass extends Phaser.Scene {
 
       sendAudio();
       */
-      const {width, height} = this.sys.game.config;
-      socket.emit("joinGame", username, width, height, (data) => {
-        players = data;
-        sceneChange("Wait");
-        this.scene.start("Wait");
-      })};
+    const {width, height} = this.sys.game.config;
+    socket.emit("joinGame", username, width, height, (data) => {
+      players = data;
+      sceneChange("Wait");
+      this.scene.start("Wait");
+    })
+  };
+}
    // }
-  }
-}
-}
+
