@@ -16,11 +16,11 @@ var conn = mongoose.connection;
 
 //--------------------------adding audiofiles------------------------------------------------------------
 
-var audio_ids = ["audio_1", "audio_2", "audio_3"];
+var audio_ids = ["audio_1.mp3", "audio_2.mp3", "audio_3.mp3",'6384806c3d3905621c51cd358b23bf86.wav'];
 var audioFiles = [];
 
 for(i=0;i<audio_ids.length;i++) {
-  var json_path = path.join(__dirname, 'audio_files', audio_ids[i]+'.wav');
+  var json_path = path.join(__dirname, 'public','assets','audiofiles', audio_ids[i]);
   audio_file = fs.readFileSync(json_path);
   audioFiles.push(audio_file);
   //audioFiles.push(fs.readFileSync(audio_ids[i]));
@@ -278,14 +278,14 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   //
 
-  socket.on('finishTranscript',(transcript,audioFile_id)=>{
+  socket.on('finishTranscript',(transcript,audioFile_id, fn)=>{
 
     postTranscript(transcript,audioFile_id);
     var audio_buffer;
     var audio_id;
     getAudioByKeys({},function(){
       [audio_buffer, audio_id] = getAudioFromDB(socket.id);
-      socket.emit('loadAudio', audio_buffer, audio_id);
+      fn(audio_buffer, audio_id);
     });
 
     var word_list = transcript.trim().split(' ');

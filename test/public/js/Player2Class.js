@@ -112,12 +112,15 @@ class Player2Class extends Phaser.Scene {
 		console.log('this.entered is '+ this.entered);
 		if (this.entered == 1) {
 			var transcription = document.getElementById("transcription").value;
-			socket.emit('finishTranscript',transcription, audio_received[this.audioNumber][1]);
-			socket.on('loadAudio',(audiofile_get,audioID_get)=>{
-				audio_received.push([audiofile_get,audioID_get]);
-			})
-			this.audioNumber += 1;
-			console.log('audionumber is '+ audioNumber);
+			$('#transcription').attr('value', '');
+			socket.emit('finishTranscript',transcription, audio_received[this.audioNumber][1], (audiofile_get, audioID_get) => {
+				audio_received.push([audiofile_get, audioID_get]);
+				this.audioNumber += 1;
+				console.log(audio_received);
+				console.log('audionumber is '+ this.audioNumber);
+				this.music = getAudio(this.audioNumber)[0];
+			});
+
 			this.play = 0;
 			this.entered=0;
 		}
