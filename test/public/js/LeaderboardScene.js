@@ -4,26 +4,29 @@ class LeaderboardScene extends Phaser.Scene {
   }
 
 
-  // preload() {
-  // 	this.load.html("leaderboard", "assets/leaderboard.html",50,50);
-  // }
+  preload() {
+    this.load.image("start-background", "../assets/jiazua-background.png");
+  }
   // preload() {
   //   this.load.image('testImage','assets/test4.jpg');
   //   this.load.audio('testAudio1','assets/audiofiles/SampleAudio_0.4mb.mp3');
   // }
 
   create() {
-      socket.emit('leaderboard');
-      socket.on('loadingLeaderboard',(sortedScore)=>{
-        $('#leaderboard').val(sortedScores);
+    this.background = this.add.image(0, 0, "start-background").setOrigin(0, 0);
 
-        var table = document.getElementById("table");
-        for (var i=0; i<table.rows.length; i++){
-          for (var j=0; j<table.rows[i].cells.length; j++) {
-            table.rows[i].cells[j].innerHTML = sortedScore[i][j];
-          }
+    socket.emit('leaderboard');
+    socket.on('loadingLeaderboard',(sortedScore)=>{
+      console.log(sortedScore);
+      $('#leaderboard').val(sortedScore);
+
+      var table = document.getElementById("table");
+      for (var i=0; i<table.rows.length; i++){
+        for (var j=0; j<table.rows[i].cells.length; j++) {
+          table.rows[i].cells[j].innerHTML = sortedScore[i][j];
         }
-      });
+      }
+    });
 
 
 

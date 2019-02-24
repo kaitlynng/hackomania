@@ -320,7 +320,7 @@ io.on("connection", function (socket) { //new instance is created with each new 
     io.emit("playerDisconnect", socket.id);
   });
 
-  setTimeout(stopfunction, 1000);
+  setTimeout(stopfunction, 10);
   function stopfunction(){
     io.emit("EndGame");
 
@@ -328,18 +328,18 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   socket.on('leaderboard',()=>{
     function testSort(){
-        var sortedScores = Object.keys(playerScores).map(function(key){
-          return[key,playerScores[key]];
+        var sortedScores = Object.keys(playersScores).map(function(key){
+          return[key,playersScores[key]];
         });
         sortedScores.sort(function(first,second){
           return second[1]-first[1];
-        })
+        });
 
-        console.log(sortedScores)
+        console.log(sortedScores);
         for(var i=0;i<sortedScores.length;i++){
           sortedScores[i][0] = players[sortedScores[i][0]].username;
         }
-        return sortedScores.slice(0,3);
+        return sortedScores.slice(0,1);
 
       }
     var sortedScore = testSort();
