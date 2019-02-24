@@ -166,6 +166,7 @@ class Player1S1Class extends Phaser.Scene {
       x: this.player.x,
       y: this.player.y
     };
+
   };
 
 

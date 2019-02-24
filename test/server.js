@@ -311,6 +311,9 @@ io.on("connection", function (socket) { //new instance is created with each new 
   });
 
 
+
+
+
   socket.on("disconnect", function () { //do not pass socket as parameter; it takes socket object from parent function
     console.log("User disconnected: " + socket.id);
     delete players[socket.id];
@@ -319,6 +322,25 @@ io.on("connection", function (socket) { //new instance is created with each new 
 
   setTimeout(stopfunction, 5000)
   function stopfunction(){
-    io.emit("EndGame");
+    function testSort(){
+      playerScores = {id1:3,id2:4,id3:1};
+      players = {'id1':{username:'username1'},'id2':{username:'username2'},'id3':{username:'username3'}};
+      var sortedScores = Object.keys(playerScores).map(function(key){
+        return[key,playerScores[key]];
+      });
+      sortedScores.sort(function(first,second){
+        return second[1]-first[1];
+      })
+
+      console.log(sortedScores)
+      for(var i=0;i<sortedScores.length;i++){
+        sortedScores[i][0] = players[sortedScores[i][0]].username;
+      }
+      return sortedScores.slice(0,3);
+
+    }
+    var sortedScore = testSort();
+    io.emit("EndGame",sortedScore);
+
   };
 });
