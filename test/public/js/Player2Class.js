@@ -106,7 +106,7 @@ class Player2Class extends Phaser.Scene {
 			this.scene.stop();
 			sceneChange("LeaderboardScene");
 			this.scene.start("LeaderboardScene");
-		})
+		});
 
 	}
 
@@ -125,7 +125,7 @@ class Player2Class extends Phaser.Scene {
 		console.log('this.entered is '+ this.entered);
 		if (this.entered == 1) {
 			var transcription = document.getElementById("transcription").value;
-			$('#transcription').attr('value', '');
+			$('#transcription').val('');
 			socket.emit('finishTranscript',transcription, audio_received[this.audioNumber][1], (audiofile_get, audioID_get) => {
 				audio_received.push([audiofile_get, audioID_get]);
 				this.audioNumber += 1;
