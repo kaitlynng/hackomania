@@ -79,6 +79,7 @@ function sceneChange(scene_key) {
 //audio functions
 var handleAudioSuccess = function(stream) {
   mediaRecorder = new MediaRecorder(stream);
+  console.log("In handle success");
   mediaRecorder.start();
   console.log("Media Device started");
 

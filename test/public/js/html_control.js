@@ -8,27 +8,18 @@ function checkHTML(active_scene) {
   if(active_scene == "Start") {
     $("#start-div").show();
     $('#player2-div').hide();
-    $('#leaderboard').hide();
   }
   else if(active_scene == "Wait") {
     $('#start-div').hide();
     $('#player2-div').hide();
-    $('#leaderboard').hide();
   }
   else if(active_scene == "Player2") {
     $('#start-div').hide();
     $('#player2-div').show();
-    $('#leaderboard').hide();
-  }
-  else if(active_scene == "LeaderboardScene") {
-    $('#start-div').hide();
-    $('#player2-div').hide();
-    $('#leaderboard').show();
   }
   else {
     $('#start-div').hide();
     $('#player2-div').hide();
-    $('#leaderboard').hide();
   };
 }
 
