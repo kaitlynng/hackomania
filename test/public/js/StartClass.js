@@ -11,7 +11,7 @@ class StartClass extends Phaser.Scene {
 
   create() {
     const {width, height} = this.sys.game.config;
-    this.image = this.add.image(630, 400, "welcome");
+    this.image = this.add.image(630, 300, "welcome");
     this.image.setInteractive();
 
     this.cameras.main.setBounds(0, 0, width, height);
@@ -42,6 +42,6 @@ class StartClass extends Phaser.Scene {
         sceneChange("Wait");
         this.scene.start("Wait");
       });
-//    }
+   // }
   }
 }

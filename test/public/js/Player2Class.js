@@ -90,6 +90,19 @@ class Player2Class extends Phaser.Scene {
 		});
 		this.i = 0;
 
+		// this.scene.add('test', Player2, true, { x: 300, y: 200 });
+		// const {width, height} = this.sys.game.config;
+		// this.worldCamera = this.scene.get('Player1S1').cameras.main.setBounds(width, height);
+		// this.scene.moveUp('Player1S1');
+		// this.worldCamera.setSize(1000, 500);
+		// this.worldCamera.centerOn(cameraWidth/2, cameraHeight/2);
+
+		socket.on('EndGame',() => {
+			this.scene.stop();
+			sceneChange("LeaderboardScene");
+			this.scene.start("LeaderboardScene");
+		})
+
 	}
 
 	update(){

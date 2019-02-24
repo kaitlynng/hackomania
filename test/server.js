@@ -178,7 +178,7 @@ var players = {};
 var playersPos = {};
 var playersScores = {};
 
-var player_num = 4;
+var player_num = 2;
 
 var partners = []; //[[partner1id, partner2id], [partner1id, partner2id], [partner1id, partner2id]]
 
@@ -303,4 +303,9 @@ io.on("connection", function (socket) { //new instance is created with each new 
     delete players[socket.id];
     io.emit("playerDisconnect", socket.id);
   });
+
+  setTimeout(stopfunction, 5000)
+  function stopfunction(){
+    io.emit("EndGame");
+  };
 });

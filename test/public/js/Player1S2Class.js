@@ -82,16 +82,19 @@ class Player1S2Class extends Phaser.Scene {
     });
 
 
-        this.pauseButton = this.add.text(150,520,"pause audio",{fill:'#006400'}).setInteractive();
-        this.pauseButton.on('pointerdown',()=>{
-          this.music.pause();
-          this.play = 2;
-    //			console.log(this.music.seek);
-        })
+      this.pauseButton = this.add.text(150,520,"pause audio",{fill:'#006400'}).setInteractive();
+      this.pauseButton.on('pointerdown',()=>{
+        this.music.pause();
+        this.play = 2;
+  //			console.log(this.music.seek);
+      })
 
 
-        this.i = 0;
+      this.i = 0;
 
+      socket.on('EndGame',() => {
+        this.scene.stop();
+      });
 
   }
 
