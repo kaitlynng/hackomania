@@ -281,8 +281,10 @@ io.on("connection", function (socket) { //new instance is created with each new 
   socket.on('finishTranscript',(transcript,audioFile_id)=>{
 
     postTranscript(transcript,audioFile_id);
+    var audio_buffer;
+    var audio_id;
     getAudioByKeys({},function(){
-      var [audio_buffer, audio_id] = getAudioFromDB(socket.id);
+      [audio_buffer, audio_id] = getAudioFromDB(socket.id);
       socket.emit('loadAudio', audio_buffer, audio_id);
     });
 

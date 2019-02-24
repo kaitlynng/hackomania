@@ -36,6 +36,8 @@ var audioChunks = [];
 var audioBlob;
 var audioBuffer;
 
+var audioNumber;
+
 var audio_received = [];
 
 var sendAudioReader = new FileReader();

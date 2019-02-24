@@ -11,9 +11,7 @@ class Player1S1Class extends Phaser.Scene {
 
   create() {
     //basic config
-    console.log("in create");
     const {width, height} = this.sys.game.config;
-    console.log("What's up");
     this.physics.world.setBounds(0, 0, width, height);
     const bg = this.add.tileSprite(0, 0, width, height, 'tile');
     bg.setOrigin(0,0);
@@ -21,6 +19,8 @@ class Player1S1Class extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.otherPlayers = this.add.group();
     // this.otherPlayersPos = {};
+    this.wordCount = 0;
+    this.audioChange = [];
 
     Object.keys(playersPos).forEach((id) => {
       if (id === my_player_id) {
@@ -62,13 +62,21 @@ class Player1S1Class extends Phaser.Scene {
       if(arrayCon[0] === col_container) {
         this.myContainers.remove(col_container);
         col_container.setVisible(false);
+        this.wordCount++;
         this.events.emit('addScore');
         socket.emit('collision', score, my_player_id);
+        if(this.wordCount == audioChange[0]) {
+          //insert change audio function here
+          this.audioChange.shift();
+          this.wordCount = 0;
+          audioNumber ++;
+        };
       };
     };
 
     socket.on('newWords', (words, wordsPos, player_id) => {
       if (player_id == players[my_player_id]["partner_id"]) { //players[my_player_id]['partner_id']
+        this.audioChange.push(words.length);
         for (var i = 0; i < words.length; i++) {
           var wordX = wordsPos[i][0];
           var wordY = wordsPos[i][1];
