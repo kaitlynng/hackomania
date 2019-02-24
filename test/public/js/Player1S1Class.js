@@ -130,13 +130,13 @@ class Player1S1Class extends Phaser.Scene {
           console.log('success!');
         }
       });
-<<<<<<< HEAD
+
     })
-=======
+
       // var player_id = Object.keys(new_pos)[0];
       // this.otherPlayers[player_id] = new_pos[player_id];
-    });
->>>>>>> 6a5260cb7adea9d129cd21a0684115c9f1568890
+    
+
 
   };
 
