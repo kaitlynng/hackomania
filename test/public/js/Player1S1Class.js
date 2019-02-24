@@ -6,6 +6,7 @@ class Player1S1Class extends Phaser.Scene {
   preload() {
     this.load.image('tile', 'assets/tile.png');
     this.load.image('sprite', 'assets/sprite.png');
+    this.load.image('sprite2', 'assets/sprite2.png');
   }
 
   create() {
@@ -18,13 +19,17 @@ class Player1S1Class extends Phaser.Scene {
     bg.setOrigin(0,0);
 
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.otherPlayers = {};
-
-    console.log("PlayersPos", playersPos);
+    this.otherPlayers = this.add.group();
+    // this.otherPlayersPos = {};
 
     Object.keys(playersPos).forEach((id) => {
+      if (id === my_player_id) {
+        this.addPlayer(id); //addPlayer adds the own character
+      } else {
+        this.addOtherPlayers(id); //adds other players' characters
+      };
       console.log("loop");
-      this.addPlayer(id);
+      // this.addPlayer(id);
     });
 
     //camera can access whole world but with a restricted window size of 800 by 500
@@ -107,14 +112,28 @@ class Player1S1Class extends Phaser.Scene {
       rem_container.setVisible(false);
     });
 
-    socket.on('playerDisconnect', (player_id) => {
-      //eh
+    socket.on("playerDisconnect", (player_id) => {
+      this.otherPlayers.getChildren().forEach((otherPlayer) => {
+        if (player_id === otherPlayer.playerId) {
+          otherPlayer.destroy();
+        }
+      });
     });
 
-    socket.on('otherPlayerMove', (new_pos) => {
-      var player_id = Object.keys(new_pos)[0];
-      this.otherPlayers[player_id] = new_pos[player_id];
-    })
+    socket.on('otherPlayerMove', (id, new_pos) => {
+      console.log('other player moved');
+      console.log('new_pos:' + new_pos);
+      console.log(id);
+      this.otherPlayers.getChildren().forEach((otherPlayer) => {
+        if (id === otherPlayer.playerId) {
+          otherPlayer.x = new_pos['x'];
+          otherPlayer.y = new_pos['y'];
+          console.log('success!');
+        }
+      });
+      // var player_id = Object.keys(new_pos)[0];
+      // this.otherPlayers[player_id] = new_pos[player_id];
+    });
 
     //EVENT DELETE WORDS: access specific group of that player by going to
     //other_words_dict[player_id] and then delete first container in the group
@@ -137,38 +156,49 @@ class Player1S1Class extends Phaser.Scene {
       this.player.setVelocityY(500);
     }
 
-    if (this.new_pos && (this.player.x !== this.new_pos['x'] || this.player.y !== this.new_pos.y)) {
+    if (this.old_pos && (this.player.x !== this.old_pos['x'] || this.player.y !== this.old_pos.y)) {
       socket.emit('playerMove', {x: this.player.x, y: this.player.y});
+      console.log('i moved');
     };
 
-    this.new_pos = {
+    this.old_pos = {
       x: this.player.x,
       y: this.player.y
     };
   };
 
 
+  addOtherPlayers(player_id) {
+    var playerX = playersPos[player_id]['x'];
+    var playerY = playersPos[player_id]['y'];
+    var otherPlayer = this.add.image(playerX, playerY, 'sprite2');
+    otherPlayer.scaleX = 0.5;
+    otherPlayer.scaleY = 0.5;
+    otherPlayer.playerId = player_id;
+    console.log('Other player:' + otherPlayer.playerId);
+    this.otherPlayers.add(otherPlayer);
+  }
+
   addPlayer(player_id) {
     var playerX = playersPos[player_id]['x'];
     var playerY = playersPos[player_id]['y'];
-    if (player_id == my_player_id) {
-      this.player = this.physics.add.image(playerX, playerY, 'sprite');
-      this.player.scaleX = 0.5;
-      this.player.scaleY = 0.5;
-      this.player.setCollideWorldBounds(true);
-      this.player.onWorldBounds = true;
-    }
-    else {
-      var otherPlayer = this.add.sprite(playerX, playerY, 'sprite2');
-      otherPlayer.scaleX = 0.5;
-      otherPlayer.scaleY = 0.5;
-      this.otherPlayers[player_id] = {
-        x: playerX,
-        y: playerY
-      }
-      // this.otherPlayers[player_id] = this.physics.add.group();
-      // this.otherPlayers[player_id].add(otherPlayer);
-    }
+    this.player = this.physics.add.image(playerX, playerY, 'sprite');
+    // if (player_id == my_player_id) {
+    this.player.scaleX = 0.5;
+    this.player.scaleY = 0.5;
+    this.player.setCollideWorldBounds(true);
+    this.player.onWorldBounds = true;
+//    }
+    // else {
+    //   var otherPlayer = this.add.sprite(playerX, playerY, 'sprite2');
+    //   otherPlayer.scaleX = 0.5;
+    //   otherPlayer.scaleY = 0.5;
+    //   this.otherPlayersPos[player_id] = {
+    //     x: playerX,
+    //     y: playerY
+    //   }
+    //   this.otherPlayers.add(otherPlayer);
+    // }
   };
 
 
