@@ -132,14 +132,13 @@ class Player1S1Class extends Phaser.Scene {
           otherPlayer.y = new_pos['y'];
         }
       });
-    })
+    });
 
     socket.on('EndGame',() => {
       this.scene.stop();
       sceneChange("LeaderboardScene");
       this.scene.start("LeaderboardScene");
-    })
-
+    });
   };
 
   update(delta) {
