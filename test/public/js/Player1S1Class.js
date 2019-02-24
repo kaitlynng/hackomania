@@ -65,7 +65,6 @@ class Player1S1Class extends Phaser.Scene {
         this.events.emit('addScore');
         socket.emit('collision', score, my_player_id);
       };
-      //socket.emit('collision', )
     };
 
     socket.emit('debugging', "hello");
@@ -128,12 +127,7 @@ class Player1S1Class extends Phaser.Scene {
           console.log('success!');
         }
       });
-      // var player_id = Object.keys(new_pos)[0];
-      // this.otherPlayers[player_id] = new_pos[player_id];
     })
-
-    //EVENT DELETE WORDS: access specific group of that player by going to
-    //other_words_dict[player_id] and then delete first container in the group
 
   };
 
