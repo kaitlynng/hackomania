@@ -50,7 +50,7 @@ class StartClass extends Phaser.Scene {
         players = data;
         sceneChange("Wait");
         this.scene.start("Wait");
-      });
+      })};
    // }
   }
 }
