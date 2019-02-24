@@ -6,6 +6,7 @@ class LeaderboardScene extends Phaser.Scene {
 
   preload() {
     this.load.image("start-background", "../assets/jiazua-background.png");
+    this.load.image("gameover", "../assets/gameover.jpg");
   }
   // preload() {
   //   this.load.image('testImage','assets/test4.jpg');
@@ -14,20 +15,15 @@ class LeaderboardScene extends Phaser.Scene {
 
   create() {
     this.background = this.add.image(0, 0, "start-background").setOrigin(0, 0);
-
+    this.image = this.add.image(630, 300, "gameover");
+    /*
     socket.emit('leaderboard');
     socket.on('loadingLeaderboard',(sortedScore)=>{
       console.log(sortedScore);
-      $('#leaderboard').val(sortedScore);
-
-      var table = document.getElementById("table");
-      for (var i=0; i<table.rows.length; i++){
-        for (var j=0; j<table.rows[i].cells.length; j++) {
-          table.rows[i].cells[j].innerHTML = sortedScore[i][j];
-        }
-      }
+      this.winner_name = this.add.text(400, 300, sortedScore[0][0]);
+      this.winner_score = this.add.text(500, 300, sortedScore[0][1]);
     });
-
+    */
 
 
 

@@ -136,8 +136,8 @@ class Player1S1Class extends Phaser.Scene {
 
     socket.on('EndGame', () => {
       this.scene.stop();
-      sceneChange("Start");
-      this.scene.start("Start");
+      sceneChange("LeaderboardScene");
+      this.scene.start("LeaderboardScene");
     });
   };
 

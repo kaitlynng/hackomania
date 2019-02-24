@@ -86,7 +86,7 @@ class Player1S2Class extends Phaser.Scene {
         this.music.pause();
         this.play = 2;
   //			console.log(this.music.seek);
-      })
+});
 
 
       this.i = 0;
