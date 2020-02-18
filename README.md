@@ -1,2 +1,1 @@
-# hackomania 
-I am zxrycyan
+# hackomania
